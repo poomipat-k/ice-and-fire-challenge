@@ -1,8 +1,9 @@
 .navbar {
+  padding: 12px;
   background-color: salmon;
 }
 
-@media screen and (min-width: 361px) {
+@media screen and (min-width: 441px) {
   .navbar {
     background-color: beige;
   }

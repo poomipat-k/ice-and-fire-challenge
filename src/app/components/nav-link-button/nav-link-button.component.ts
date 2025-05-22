@@ -1,11 +1,9 @@
 import { Component } from '@angular/core';
 
 @Component({
-  selector: 'app-nav-link-button',
+  selector: 'app-com-nav-link-button',
   imports: [],
   templateUrl: './nav-link-button.component.html',
-  styleUrl: './nav-link-button.component.scss'
+  styleUrl: './nav-link-button.component.scss',
 })
-export class NavLinkButtonComponent {
-
-}
+export class NavLinkButtonComponent {}

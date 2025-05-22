@@ -1,5 +1,24 @@
-<ul>
-  <li>Books</li>
-  <li>Houses</li>
-  <li>Characters</li>
-</ul>
+<section class="layout">
+  <ul>
+    <li>Books</li>
+    <li>Houses</li>
+    <li>Characters</li>
+  </ul>
+
+  <br />
+
+  <div class="container">
+    <app-com-card-book
+      name="A Game of Thrones"
+      [authors]="[
+        'George R. R. Martin',
+        'George R. R. Martin2',
+        'George R. R. Martin3',
+        'George R. R. Martin4',
+        'George R. R. Martin5'
+      ]"
+      [noOfPages]="694"
+      [releasedDate]="'1996-08-01T00:00:00'"
+    ></app-com-card-book>
+  </div>
+</section>

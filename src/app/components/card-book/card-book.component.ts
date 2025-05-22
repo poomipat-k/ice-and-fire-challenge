@@ -1,0 +1,35 @@
+import { Component, computed, input } from '@angular/core';
+import { BasicCardData } from '../../shared/models/basic-card-data';
+import { CardBasicComponent } from '../card-basic/card-basic.component';
+
+@Component({
+  selector: 'app-com-card-book',
+  imports: [CardBasicComponent],
+  templateUrl: './card-book.component.html',
+  styleUrl: './card-book.component.scss',
+})
+export class CardBookComponent {
+  name = input<string>('');
+  authors = input<string[]>([]);
+  noOfPages = input<number>(0);
+  releasedDate = input<string>('');
+
+  fields = computed<BasicCardData>(() => [
+    {
+      key: 'name',
+      val: this.name(),
+    },
+    {
+      key: 'authors',
+      val: this.authors(),
+    },
+    {
+      key: 'number of pages',
+      val: this.noOfPages(),
+    },
+    {
+      key: 'releasedDate',
+      val: this.releasedDate(),
+    },
+  ]);
+}

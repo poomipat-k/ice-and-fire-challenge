@@ -1,0 +1,14 @@
+.card {
+  min-width: 328px;
+  max-width: 600px;
+  min-height: 200px;
+  border: 1px solid blue;
+  border-radius: 16px;
+
+  position: relative;
+
+  &__row {
+    display: flex;
+    gap: 20px;
+  }
+}
