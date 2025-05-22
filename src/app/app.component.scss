@@ -1,0 +1,9 @@
+.navbar {
+  background-color: salmon;
+}
+
+@media screen and (min-width: 361px) {
+  .navbar {
+    background-color: beige;
+  }
+}
