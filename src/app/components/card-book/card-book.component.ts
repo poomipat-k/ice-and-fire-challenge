@@ -9,27 +9,31 @@ import { CardBasicComponent } from '../card-basic/card-basic.component';
   styleUrl: './card-book.component.scss',
 })
 export class CardBookComponent {
-  name = input<string>('');
-  authors = input<string[]>([]);
-  noOfPages = input<number>(0);
-  releasedDate = input<string>('');
+  name = input.required<string>();
+  authors = input.required<string[]>();
+  noOfPages = input.required<number>();
+  releasedDate = input.required<string>();
 
-  fields = computed<BasicCardData>(() => [
-    {
-      key: 'name',
-      val: this.name(),
-    },
-    {
-      key: 'authors',
-      val: this.authors(),
-    },
-    {
-      key: 'number of pages',
-      val: this.noOfPages(),
-    },
-    {
-      key: 'releasedDate',
-      val: this.releasedDate(),
-    },
-  ]);
+  bookAttributes = computed<BasicCardData>(() => {
+    const filtered = [];
+
+    return [
+      {
+        key: 'name',
+        val: this.name(),
+      },
+      {
+        key: 'authors',
+        val: this.authors(),
+      },
+      {
+        key: 'number of pages',
+        val: this.noOfPages(),
+      },
+      {
+        key: 'releasedDate',
+        val: this.releasedDate(),
+      },
+    ];
+  });
 }
