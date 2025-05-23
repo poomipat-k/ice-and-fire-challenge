@@ -1,14 +1,15 @@
 <section class="layout">
   <ul>
-    <li>Books</li>
-    <li>Houses</li>
-    <li>Characters</li>
+    <a routerLink="books"><li>Books</li></a>
+    <a routerLink="houses"><li>Houses</li></a>
+    <a routerLink="characters"><li>Characters</li></a>
   </ul>
 
   <br />
   <p>Search bar</p>
   <p>filter</p>
   <br />
+  <p>Subroute below:</p>
   <div class="container">
     <router-outlet />
   </div>

@@ -8,6 +8,12 @@ import { PageNotFoundComponent } from './page-not-found/page-not-found.component
 export const routes: Routes = [
   {
     path: 'list',
+    title: 'List page',
+    redirectTo: '/list/books',
+    pathMatch: 'full',
+  },
+  {
+    path: 'list',
     component: ListPageComponent,
     title: 'List page',
     children: [
