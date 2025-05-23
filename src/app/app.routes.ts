@@ -1,7 +1,7 @@
 import { Routes } from '@angular/router';
-import { ListBookPageComponent } from './list-book-page/list-book-page.component';
-import { ListCharactersPageComponent } from './list-characters-page/list-characters-page.component';
-import { ListHousePageComponent } from './list-house-page/list-house-page.component';
+import { ListBookPageComponent } from './list-page/list-book-page/list-book-page.component';
+import { ListCharactersPageComponent } from './list-page/list-characters-page/list-characters-page.component';
+import { ListHousePageComponent } from './list-page/list-house-page/list-house-page.component';
 import { ListPageComponent } from './list-page/list-page.component';
 import { PageNotFoundComponent } from './page-not-found/page-not-found.component';
 

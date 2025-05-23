@@ -1,5 +1,5 @@
 import { Component } from '@angular/core';
-import { CardBookComponent } from '../components/card-book/card-book.component';
+import { CardBookComponent } from '../../components/card-book/card-book.component';
 
 @Component({
   selector: 'app-list-book-page',
