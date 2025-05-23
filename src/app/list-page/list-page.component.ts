@@ -2,27 +2,41 @@ import {
   ChangeDetectionStrategy,
   Component,
   inject,
-  Injector,
+  OnDestroy,
   OnInit,
 } from '@angular/core';
+import { FormControl, ReactiveFormsModule } from '@angular/forms';
 import { RouterLink, RouterOutlet } from '@angular/router';
+import { Subscription } from 'rxjs';
 import { ListPageStore } from './list-page.store';
 
 @Component({
   selector: 'app-list-page',
-  imports: [RouterOutlet, RouterLink],
+  imports: [RouterOutlet, RouterLink, ReactiveFormsModule],
   templateUrl: './list-page.component.html',
   styleUrl: './list-page.component.scss',
   providers: [ListPageStore],
   changeDetection: ChangeDetectionStrategy.OnPush,
 })
-export class ListPageComponent implements OnInit {
+export class ListPageComponent implements OnInit, OnDestroy {
   readonly store = inject(ListPageStore);
-  readonly #injector = inject(Injector);
+
+  readonly searchText = new FormControl<string>('');
+  private readonly subs: Subscription[] = [];
 
   ngOnInit(): void {
-    const query = this.store.filter.query;
-    console.log('==OnInit query: ', query());
-    this.store.loadByQuery(query, { injector: this.#injector });
+    console.log('===OnInit Parent');
+    this.store.updateQuery('');
+    this.store.changeResource('houses');
+
+    const querySub = this.searchText?.valueChanges?.subscribe((query) => {
+      this.store.updateQuery(query || '');
+    });
+    this.subs.push(querySub);
+  }
+
+  ngOnDestroy(): void {
+    console.log('===ngOnDestroy Parent');
+    this.subs.forEach((s) => s.unsubscribe());
   }
 }

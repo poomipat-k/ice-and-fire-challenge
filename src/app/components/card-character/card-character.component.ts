@@ -10,13 +10,18 @@ import { CardBasicComponent } from '../card-basic/card-basic.component';
 })
 export class CardCharacterComponent {
   name = input.required<string>();
-  gender = input<string>('');
+  culture = input.required<string>();
+  gender = input.required<string>();
 
   characterAttributes = computed<BasicCardData>(() => {
     return [
       {
         key: 'name',
         val: this.name(),
+      },
+      {
+        key: 'culture',
+        val: this.culture(),
       },
       {
         key: 'gender',
