@@ -26,7 +26,7 @@ const initialState: ListPageState = {
 export const ListPageStore = signalStore(
   // state
   withState(initialState),
-  // computed
+  // methods
   withMethods(
     (
       store,
