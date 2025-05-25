@@ -6,10 +6,12 @@ import { debounceTime, distinctUntilChanged, pipe, switchMap, tap } from 'rxjs';
 import { BooksService } from '../services/books.service';
 import { CharactersService } from '../services/characters.service';
 import { HousesService } from '../services/houses.service';
+import { Book } from '../shared/models/book';
 
 type ListPageState = {
   resource: 'books' | 'houses' | 'characters';
   isLoading: boolean;
+  books: Book[];
   query: string;
   booksFilter: {
     page: number;
@@ -28,6 +30,7 @@ type ListPageState = {
 const initialState: ListPageState = {
   resource: 'books',
   isLoading: false,
+  books: [],
   query: '',
   booksFilter: { page: 1, pageSize: 10 },
   housesFilter: { page: 1, pageSize: 10 },
@@ -62,11 +65,14 @@ export const ListPageStore = signalStore(
           distinctUntilChanged(),
           tap(() => patchState(store, { isLoading: true })),
           switchMap((query) => {
-            return booksService.getByQuery(query, 1, 10).pipe(
+            return booksService.getByQuery(query, 1, 11).pipe(
               tapResponse({
                 next: (books) => {
                   console.log('===books: ', books);
-                  patchState(store, { isLoading: false });
+                  patchState(store, {
+                    books: books,
+                    isLoading: false,
+                  });
                 },
                 error: (err) => {
                   patchState(store, { isLoading: false });

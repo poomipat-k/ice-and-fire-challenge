@@ -11,8 +11,8 @@ import { CardBasicComponent } from '../card-basic/card-basic.component';
 export class CardBookComponent {
   name = input.required<string>();
   authors = input.required<string[]>();
-  noOfPages = input.required<number>();
-  releasedDate = input.required<string>();
+  numberOfPages = input.required<number>();
+  released = input.required<string>();
 
   bookAttributes = computed<BasicCardData>(() => {
     const filtered = [];
@@ -28,11 +28,11 @@ export class CardBookComponent {
       },
       {
         key: 'number of pages',
-        val: this.noOfPages(),
+        val: this.numberOfPages(),
       },
       {
         key: 'releasedDate',
-        val: this.releasedDate(),
+        val: this.released(),
       },
     ];
   });
