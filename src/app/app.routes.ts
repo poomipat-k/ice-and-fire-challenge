@@ -18,9 +18,21 @@ export const routes: Routes = [
     component: ListPageComponent,
     title: 'List page',
     children: [
-      { path: 'books', component: ListBookPageComponent },
-      { path: 'houses', component: ListHousePageComponent },
-      { path: 'characters', component: ListCharactersPageComponent },
+      {
+        path: 'books',
+        component: ListBookPageComponent,
+        title: 'Books - Ice and Fire books',
+      },
+      {
+        path: 'houses',
+        component: ListHousePageComponent,
+        title: 'Houses - Ice and Fire houses',
+      },
+      {
+        path: 'characters',
+        component: ListCharactersPageComponent,
+        title: 'Characters - Ice and Fire characters',
+      },
     ],
   },
   {

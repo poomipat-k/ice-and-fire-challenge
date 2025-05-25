@@ -15,8 +15,6 @@ export class CardBookComponent {
   released = input.required<string | Date>();
 
   bookAttributes = computed<BasicCardData>(() => {
-    const filtered = [];
-
     return [
       {
         key: 'name',

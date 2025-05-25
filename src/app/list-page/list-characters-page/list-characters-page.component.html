@@ -1,5 +1,11 @@
-<app-com-card-character
-  [name]="'Jon'"
-  [culture]="'The wall'"
-  [gender]="'Male'"
-></app-com-card-character>
+<div class="container">
+  @for (character of store.characters(); track $index) {
+  <div class="card">
+    <app-com-card-character
+      [name]="character.name"
+      [culture]="character.culture"
+      [gender]="character.gender"
+    ></app-com-card-character>
+  </div>
+  }
+</div>

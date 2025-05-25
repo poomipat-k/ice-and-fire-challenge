@@ -7,11 +7,15 @@ import { BooksService } from '../services/books.service';
 import { CharactersService } from '../services/characters.service';
 import { HousesService } from '../services/houses.service';
 import { Book } from '../shared/models/book';
+import { Character } from '../shared/models/character';
+import { House } from '../shared/models/house';
 
 type ListPageState = {
   resource: 'books' | 'houses' | 'characters';
   isLoading: boolean;
   books: Book[];
+  houses: House[];
+  characters: Character[];
   query: string;
   booksFilter: {
     page: number;
@@ -31,6 +35,8 @@ const initialState: ListPageState = {
   resource: 'books',
   isLoading: false,
   books: [],
+  houses: [],
+  characters: [],
   query: '',
   booksFilter: { page: 1, pageSize: 10 },
   housesFilter: { page: 1, pageSize: 10 },
@@ -65,7 +71,7 @@ export const ListPageStore = signalStore(
           distinctUntilChanged(),
           tap(() => patchState(store, { isLoading: true })),
           switchMap((query) => {
-            return booksService.getByQuery(query, 1, 11).pipe(
+            return booksService.getByQuery(query, 1, 10).pipe(
               tapResponse({
                 next: (books) => {
                   console.log('===books: ', books);
@@ -95,7 +101,10 @@ export const ListPageStore = signalStore(
               tapResponse({
                 next: (houses) => {
                   console.log('===houses: ', houses);
-                  patchState(store, { isLoading: false });
+                  patchState(store, {
+                    houses: houses,
+                    isLoading: false,
+                  });
                 },
                 error: (err) => {
                   patchState(store, { isLoading: false });
@@ -118,7 +127,10 @@ export const ListPageStore = signalStore(
               tapResponse({
                 next: (characters) => {
                   console.log('===characters: ', characters);
-                  patchState(store, { isLoading: false });
+                  patchState(store, {
+                    characters: characters,
+                    isLoading: false,
+                  });
                 },
                 error: (err) => {
                   patchState(store, { isLoading: false });
