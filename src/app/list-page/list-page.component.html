@@ -1,0 +1,24 @@
+<section class="layout">
+  <ul style="font-size: 24px">
+    <a routerLink=""><li>Home</li></a>
+    <a routerLink="books"><li>Books</li></a>
+    <a routerLink="houses"><li>Houses</li></a>
+    <a routerLink="characters"><li>Characters</li></a>
+  </ul>
+
+  <br />
+  <p>Search bar</p>
+  <input
+    type="input"
+    autocomplete="on"
+    style="padding: 4px; font-size: 20px"
+    [formControl]="searchText"
+  />
+  <p>filter</p>
+  <br />
+  <p>Subroute below:</p>
+
+  <div class="container">
+    <router-outlet />
+  </div>
+</section>

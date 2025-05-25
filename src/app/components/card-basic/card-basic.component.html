@@ -1,0 +1,8 @@
+<div class="card">
+  @for (field of card(); track $index) {
+  <div class="card__row">
+    <p>{{ field.key }}</p>
+    <p>{{ field.val }}</p>
+  </div>
+  }
+</div>

@@ -1,0 +1,10 @@
+<div class="container">
+  @for (house of store.houses(); track $index) {
+  <div class="card">
+    <app-com-card-house
+      [name]="house.name"
+      [region]="house.region"
+    ></app-com-card-house>
+  </div>
+  }
+</div>

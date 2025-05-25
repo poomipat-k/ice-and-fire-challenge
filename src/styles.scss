@@ -1,1 +1,21 @@
 /* You can add global styles to this file, and also import other style files */
+
+$non-mobile-bp: 441px;
+
+body {
+  box-sizing: border-box;
+}
+
+*,
+*::after,
+*::before {
+  margin: 0;
+  padding: 0;
+  //   box-sizing: inherit;
+  box-sizing: border-box;
+}
+
+// ol,
+// ul {
+//   padding-left: 16.4px;
+// }

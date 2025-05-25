@@ -1,0 +1,15 @@
+@import "../../../styles.scss";
+
+.card {
+  display: block;
+  margin-bottom: 20px;
+}
+
+@media screen and (min-width: $non-mobile-bp) {
+  .container {
+    display: flex;
+    flex-flow: row wrap;
+    gap: 20px;
+    justify-content: center;
+  }
+}
