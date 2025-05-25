@@ -2,6 +2,7 @@ import { HttpClient } from '@angular/common/http';
 import { inject, Injectable } from '@angular/core';
 import { catchError, Observable } from 'rxjs';
 import { environment } from '../../environments/environment';
+import { Character } from '../shared/models/character';
 import { handleError } from './error-handling';
 
 @Injectable({
@@ -13,18 +14,14 @@ export class CharactersService {
 
   constructor() {}
 
-  getByQuery(query: string, page: number, pageSize: number): Observable<any> {
+  getByQuery(
+    query: string,
+    page: number,
+    pageSize: number
+  ): Observable<Character[]> {
     return this.http
-      .get<any>(
+      .get<Character[]>(
         `${this.baseApiUrl}/characters?name=${query}&page=${page}&pageSize=${pageSize}`
-      )
-      .pipe(catchError(handleError));
-  }
-
-  getAll(page: number, pageSize: number): Observable<any> {
-    return this.http
-      .get<any>(
-        `${this.baseApiUrl}/characters?page=${page}&pageSize=${pageSize}`
       )
       .pipe(catchError(handleError));
   }

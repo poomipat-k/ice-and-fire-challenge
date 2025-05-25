@@ -2,6 +2,7 @@ import { HttpClient } from '@angular/common/http';
 import { inject, Injectable } from '@angular/core';
 import { catchError, Observable } from 'rxjs';
 import { environment } from '../../environments/environment';
+import { Book } from '../shared/models/book';
 import { handleError } from './error-handling';
 
 @Injectable({
@@ -12,17 +13,15 @@ export class BooksService {
   private baseApiUrl = environment.apiUrl;
   constructor() {}
 
-  getByQuery(query: string, page: number, pageSize: number): Observable<any> {
+  getByQuery(
+    query: string,
+    page: number,
+    pageSize: number
+  ): Observable<Book[]> {
     return this.http
-      .get<any>(
+      .get<Book[]>(
         `${this.baseApiUrl}/books?name=${query}&page=${page}&pageSize=${pageSize}`
       )
-      .pipe(catchError(handleError));
-  }
-
-  getAll(page: number, pageSize: number): Observable<any> {
-    return this.http
-      .get<any>(`${this.baseApiUrl}?page=${page}&pageSize=${pageSize}`)
       .pipe(catchError(handleError));
   }
 }
