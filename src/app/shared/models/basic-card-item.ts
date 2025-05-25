@@ -1,4 +1,4 @@
 export type BasicCardItem = {
   key: string;
-  val: string | string[] | number;
+  val: string | string[] | number | Date;
 };

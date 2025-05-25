@@ -12,7 +12,7 @@ export class CardBookComponent {
   name = input.required<string>();
   authors = input.required<string[]>();
   numberOfPages = input.required<number>();
-  released = input.required<string>();
+  released = input.required<string | Date>();
 
   bookAttributes = computed<BasicCardData>(() => {
     const filtered = [];
