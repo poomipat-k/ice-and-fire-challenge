@@ -10,8 +10,16 @@ import { HousesService } from '../services/houses.service';
 type ListPageState = {
   resource: 'books' | 'houses' | 'characters';
   isLoading: boolean;
-  filter: {
-    query: string;
+  query: string;
+  booksFilter: {
+    page: number;
+    pageSize: number;
+  };
+  housesFilter: {
+    page: number;
+    pageSize: number;
+  };
+  charactersFilter: {
     page: number;
     pageSize: number;
   };
@@ -20,7 +28,10 @@ type ListPageState = {
 const initialState: ListPageState = {
   resource: 'books',
   isLoading: false,
-  filter: { query: '', page: 1, pageSize: 10 },
+  query: '',
+  booksFilter: { page: 1, pageSize: 10 },
+  housesFilter: { page: 1, pageSize: 10 },
+  charactersFilter: { page: 1, pageSize: 10 },
 };
 
 export const ListPageStore = signalStore(
@@ -38,18 +49,19 @@ export const ListPageStore = signalStore(
         patchState(store, { resource: resource });
       },
       updateQuery(query: string): void {
-        // Updating state using the `patchState` function
-        console.log('==updatedQuery:', query);
-        patchState(store, (state) => ({ filter: { ...state.filter, query } }));
+        patchState(store, (state) => ({
+          booksFilter: { ...state.booksFilter, query },
+          housesFilter: { ...state.housesFilter, query },
+          charactersFilter: { ...state.charactersFilter, query },
+        }));
       },
       // RxJs methods
       loadBooksByQuery: rxMethod<string>(
         pipe(
-          debounceTime(400),
+          debounceTime(300),
           distinctUntilChanged(),
           tap(() => patchState(store, { isLoading: true })),
           switchMap((query) => {
-            console.log('==books query', query);
             return booksService.getByQuery(query, 1, 10).pipe(
               tapResponse({
                 next: (books) => {
@@ -69,11 +81,10 @@ export const ListPageStore = signalStore(
 
       loadHousesByQuery: rxMethod<string>(
         pipe(
-          debounceTime(400),
+          debounceTime(300),
           distinctUntilChanged(),
           tap(() => patchState(store, { isLoading: true })),
           switchMap((query) => {
-            console.log('==houses query', query);
             return housesService.getByQuery(query, 1, 10).pipe(
               tapResponse({
                 next: (houses) => {
@@ -93,11 +104,10 @@ export const ListPageStore = signalStore(
 
       loadCharactersByQuery: rxMethod<string>(
         pipe(
-          debounceTime(400),
+          debounceTime(300),
           distinctUntilChanged(),
           tap(() => patchState(store, { isLoading: true })),
           switchMap((query) => {
-            console.log('==characters query', query);
             return charactersService.getByQuery(query, 1, 10).pipe(
               tapResponse({
                 next: (characters) => {

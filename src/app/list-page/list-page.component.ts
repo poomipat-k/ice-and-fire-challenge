@@ -25,7 +25,6 @@ export class ListPageComponent implements OnInit, OnDestroy {
   private readonly subs: Subscription[] = [];
 
   ngOnInit(): void {
-    console.log('===OnInit Parent');
     this.store.updateQuery('');
     this.store.changeResource('houses');
 
@@ -36,7 +35,6 @@ export class ListPageComponent implements OnInit, OnDestroy {
   }
 
   ngOnDestroy(): void {
-    console.log('===ngOnDestroy Parent');
     this.subs.forEach((s) => s.unsubscribe());
   }
 }

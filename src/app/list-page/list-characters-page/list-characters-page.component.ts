@@ -1,4 +1,4 @@
-import { Component, inject, Injector } from '@angular/core';
+import { Component, inject, Injector, OnInit } from '@angular/core';
 import { CardCharacterComponent } from '../../components/card-character/card-character.component';
 import { ListPageStore } from '../list-page.store';
 
@@ -8,20 +8,15 @@ import { ListPageStore } from '../list-page.store';
   templateUrl: './list-characters-page.component.html',
   styleUrl: './list-characters-page.component.scss',
 })
-export class ListCharactersPageComponent {
+export class ListCharactersPageComponent implements OnInit {
   readonly store = inject(ListPageStore);
   readonly #injector = inject(Injector);
 
   ngOnInit(): void {
-    console.log('====OnInit characters');
     this.store.updateQuery('');
     this.store.changeResource('characters');
-    this.store.loadCharactersByQuery(this.store.filter.query, {
+    this.store.loadCharactersByQuery(this.store.query, {
       injector: this.#injector,
     });
-  }
-
-  ngOnDestroy(): void {
-    console.log('====ngOnDestroy characters');
   }
 }

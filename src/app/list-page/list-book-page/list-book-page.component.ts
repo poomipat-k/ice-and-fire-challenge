@@ -1,4 +1,4 @@
-import { Component, inject, Injector, OnDestroy, OnInit } from '@angular/core';
+import { Component, inject, Injector, OnInit } from '@angular/core';
 import { CardBookComponent } from '../../components/card-book/card-book.component';
 import { ListPageStore } from '../list-page.store';
 
@@ -8,19 +8,14 @@ import { ListPageStore } from '../list-page.store';
   templateUrl: './list-book-page.component.html',
   styleUrl: './list-book-page.component.scss',
 })
-export class ListBookPageComponent implements OnInit, OnDestroy {
+export class ListBookPageComponent implements OnInit {
   readonly store = inject(ListPageStore);
   readonly #injector = inject(Injector);
 
   ngOnInit(): void {
-    console.log('====OnInit books');
     this.store.updateQuery('');
     this.store.changeResource('books');
-    const query = this.store.filter.query;
+    const query = this.store.query;
     this.store.loadBooksByQuery(query, { injector: this.#injector });
-  }
-
-  ngOnDestroy(): void {
-    console.log('====ngOnDestroy books');
   }
 }
