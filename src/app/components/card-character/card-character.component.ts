@@ -9,6 +9,7 @@ import { CardBasicComponent } from '../card-basic/card-basic.component';
   styleUrl: './card-character.component.scss',
 })
 export class CardCharacterComponent {
+  redirectTo = input.required<string>();
   name = input.required<string>();
   culture = input.required<string>();
   gender = input.required<string>();

@@ -1,4 +1,7 @@
 import { Routes } from '@angular/router';
+import { DetailsBookComponent } from './details-book/details-book.component';
+import { DetailsCharacterComponent } from './details-character/details-character.component';
+import { DetailsHouseComponent } from './details-house/details-house.component';
 import { HomeComponent } from './home/home.component';
 import { ListBookPageComponent } from './list-page/list-book-page/list-book-page.component';
 import { ListCharactersPageComponent } from './list-page/list-characters-page/list-characters-page.component';
@@ -36,11 +39,24 @@ export const routes: Routes = [
     ],
   },
   {
+    path: 'books/:bookId',
+    component: DetailsBookComponent,
+    title: 'Book details',
+  },
+  {
+    path: 'houses/:bookId',
+    component: DetailsHouseComponent,
+    title: 'House details',
+  },
+  {
+    path: 'characters/:bookId',
+    component: DetailsCharacterComponent,
+    title: 'Character details',
+  },
+  {
     path: '',
     component: HomeComponent,
     title: 'Ice and Fire Home page',
-    // redirectTo: '/list',
-    // pathMatch: 'full',
   },
   { path: '**', component: PageNotFoundComponent },
 ];

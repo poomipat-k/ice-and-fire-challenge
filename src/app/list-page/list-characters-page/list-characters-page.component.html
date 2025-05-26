@@ -2,6 +2,7 @@
   @for (character of store.characters(); track $index) {
   <div class="card">
     <app-com-card-character
+      [redirectTo]="getDetailsPath(character.url)"
       [name]="character.name"
       [culture]="character.culture"
       [gender]="character.gender"
