@@ -20,6 +20,8 @@ export class DetailsBookComponent implements OnInit {
   readonly store = inject(BookDetailsStore);
 
   ngOnInit(): void {
-    console.log('==[INIT]== bookId', Number(this.bookId()));
+    const id = Number(this.bookId());
+    console.log('==[INIT]== id', id);
+    this.store.loadById(id);
   }
 }
