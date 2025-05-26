@@ -21,7 +21,6 @@ export class DetailsBookComponent implements OnInit {
 
   ngOnInit(): void {
     const id = Number(this.bookId());
-    console.log('==[INIT]== id', id);
     this.store.loadById(id);
   }
 }

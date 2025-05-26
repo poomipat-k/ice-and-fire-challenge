@@ -44,12 +44,12 @@ export const routes: Routes = [
     title: 'Book details',
   },
   {
-    path: 'houses/:bookId',
+    path: 'houses/:houseId',
     component: DetailsHouseComponent,
     title: 'House details',
   },
   {
-    path: 'characters/:bookId',
+    path: 'characters/:characterId',
     component: DetailsCharacterComponent,
     title: 'Character details',
   },
