@@ -25,4 +25,10 @@ export class BooksService implements QueryResource {
       )
       .pipe(catchError(handleError));
   }
+
+  getById(id: number) {
+    return this.http
+      .get<Book>(`${this.baseApiUrl}/books/${id}`)
+      .pipe(catchError(handleError));
+  }
 }

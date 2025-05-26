@@ -26,4 +26,10 @@ export class CharactersService implements QueryResource {
       )
       .pipe(catchError(handleError));
   }
+
+  getById(id: number) {
+    return this.http
+      .get<Character>(`${this.baseApiUrl}/characters/${id}`)
+      .pipe(catchError(handleError));
+  }
 }

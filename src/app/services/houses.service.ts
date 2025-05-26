@@ -26,4 +26,10 @@ export class HousesService implements QueryResource {
       )
       .pipe(catchError(handleError));
   }
+
+  getById(id: number) {
+    return this.http
+      .get<House>(`${this.baseApiUrl}/houses/${id}`)
+      .pipe(catchError(handleError));
+  }
 }
