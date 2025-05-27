@@ -2,6 +2,7 @@
   @for (house of store.houses(); track $index) {
   <div class="card">
     <app-com-card-house
+      [redirectTo]="getDetailsPath(house.url)"
       [name]="house.name"
       [region]="house.region"
     ></app-com-card-house>

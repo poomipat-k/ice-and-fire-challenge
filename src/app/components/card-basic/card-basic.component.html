@@ -1,8 +1,15 @@
 <div class="card">
-  @for (field of card(); track $index) {
-  <div class="card__row">
-    <p>{{ field.key }}</p>
-    <p>{{ field.val }}</p>
+  <div>
+    @for (field of card(); track $index) {
+    <div class="card__row">
+      <p>{{ field.key }}</p>
+      <p>{{ field.val }}</p>
+    </div>
+    }
   </div>
-  }
+  <div class="card__link">
+    @if (redirectTo()?.length) {
+    <a [routerLink]="redirectTo()">More details</a>
+    }
+  </div>
 </div>

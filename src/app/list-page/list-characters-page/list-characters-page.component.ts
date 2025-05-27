@@ -19,4 +19,8 @@ export class ListCharactersPageComponent implements OnInit {
       injector: this.#injector,
     });
   }
+
+  getDetailsPath(url: string): string {
+    return url.replace('https://anapioficeandfire.com/api', '');
+  }
 }

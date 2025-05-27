@@ -9,6 +9,7 @@ import { CardBasicComponent } from '../card-basic/card-basic.component';
   styleUrl: './card-house.component.scss',
 })
 export class CardHouseComponent {
+  redirectTo = input.required<string>();
   name = input.required<string>();
   region = input.required<string>();
 

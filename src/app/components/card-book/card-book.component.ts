@@ -9,6 +9,7 @@ import { CardBasicComponent } from '../card-basic/card-basic.component';
   styleUrl: './card-book.component.scss',
 })
 export class CardBookComponent {
+  redirectTo = input.required<string>();
   name = input.required<string>();
   authors = input.required<string[]>();
   numberOfPages = input.required<number>();
