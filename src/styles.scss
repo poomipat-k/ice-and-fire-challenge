@@ -2,24 +2,18 @@
 
 $non-mobile-bp: 441px;
 
-*,
-*::after,
-*::before {
-  margin: 0;
-  padding: 0;
-  box-sizing: border-box;
-  box-sizing: inherit;
-}
-
 html {
   scroll-behavior: smooth;
+  box-sizing: border-box;
 }
 
 body {
   box-sizing: border-box;
 }
 
-// ol,
-// ul {
-//   padding-left: 16.4px;
-// }
+*,
+*::after,
+*::before {
+  margin: 0;
+  padding: 0;
+}

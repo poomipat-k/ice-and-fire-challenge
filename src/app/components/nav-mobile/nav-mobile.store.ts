@@ -12,10 +12,13 @@ export const NavMobileStore = signalStore(
   // state
   withState(initialState),
   withMethods((store) => ({
-    toggleDisplayMenu() {
+    toggleNav() {
       patchState(store, (state) => ({
         displayMenu: !state.displayMenu,
       }));
+    },
+    closeNav() {
+      patchState(store, { displayMenu: false });
     },
   }))
 );
