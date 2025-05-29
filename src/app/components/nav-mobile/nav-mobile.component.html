@@ -15,8 +15,14 @@
 >
   <div class="menu__container">
     <a routerLink="/" (click)="store.closeNav()" class="menu__link">Home</a>
-    <div class="menu__link">Favorites</div>
-    <div class="menu__link">List Pages</div>
+    <div class="menu__group">
+      <div>Favorites</div>
+      <div class="menu__expand-icon">></div>
+    </div>
+    <div class="menu__group">
+      <div>Lists</div>
+      <div class="menu__expand-icon">></div>
+    </div>
   </div>
 </div>
 

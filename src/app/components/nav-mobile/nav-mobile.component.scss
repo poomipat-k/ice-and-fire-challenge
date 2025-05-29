@@ -1,6 +1,7 @@
+$active-color: #feb273;
+
 .icon {
   background-color: #2f2f2f;
-  cursor: pointer;
   width: 54px;
   height: 100%;
 
@@ -37,23 +38,7 @@
   height: 100vh;
   position: absolute;
   z-index: 2;
-  transition: all 300ms ease-in-out;
-
-  &__container {
-    color: #fff;
-    list-style: none;
-    overflow: hidden;
-    white-space: nowrap;
-  }
-
-  &__link {
-    color: #fff;
-    text-decoration: none;
-    cursor: pointer;
-    font-size: 18px;
-    line-height: 27px;
-    display: block;
-  }
+  transition: all 100ms ease-in-out;
 
   &--open {
     width: 250px;
@@ -62,6 +47,35 @@
   &--close {
     width: 0;
     visibility: hidden;
+  }
+
+  &__container {
+    list-style: none;
+    overflow: hidden;
+    white-space: nowrap;
+  }
+
+  &__link {
+    padding: 8px 0 8px 16px;
+    // border: 1px solid blue;
+    color: #fff;
+    text-decoration: none;
+    font-size: 18px;
+    line-height: 27px;
+    display: block;
+  }
+
+  &__group {
+    display: flex;
+    justify-content: space-between;
+    padding: 8px 16px 8px 16px;
+    color: #fff;
+    font-size: 18px;
+    line-height: 27px;
+  }
+
+  &__expand-icon {
+    font-size: 24px;
   }
 }
 
