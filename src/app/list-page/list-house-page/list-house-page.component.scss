@@ -1,11 +1,11 @@
-@import "../../../styles.scss";
+@use "../../../styles.scss";
 
 .card {
   display: block;
   margin-bottom: 20px;
 }
 
-@media screen and (min-width: $non-mobile-bp) {
+@media screen and (min-width: styles.$non-mobile-bp) {
   .container {
     display: flex;
     flex-flow: row wrap;

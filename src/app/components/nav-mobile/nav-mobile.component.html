@@ -1,5 +1,10 @@
-<div class="icon">
+<div class="icon" (click)="store.toggleDisplayMenu()">
   <span class="icon__hamburger"></span>
   <span class="icon__hamburger"></span>
   <span class="icon__hamburger"></span>
 </div>
+
+@if (store.displayMenu()) {
+<div class="menu"></div>
+<div class="backdrop" (click)="store.toggleDisplayMenu()"></div>
+}
