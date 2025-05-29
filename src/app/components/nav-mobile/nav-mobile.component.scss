@@ -1,0 +1,39 @@
+// .box-shadow-menu {
+//   position: relative;
+//   padding-left: 10px;
+//   padding-top: 5px;
+// }
+// .box-shadow-menu:before {
+//   content: "";
+//   position: absolute;
+//   left: 0;
+//   top: 4px;
+//   width: 1em;
+//   height: 0.15em;
+//   background: black;
+//   box-shadow: 0 10px 0 0 black, 0 20px 0 0 black;
+// }
+
+.icon {
+  background-color: #000;
+  cursor: pointer;
+  width: 54px;
+  padding: 12px;
+
+  -webkit-user-select: none;
+  user-select: none;
+
+  &__hamburger {
+    display: block;
+    width: 30px;
+    height: 3px;
+
+    background-color: #fff;
+    border-radius: 3px;
+  }
+
+  &__hamburger:not(:last-child) {
+    display: block;
+    margin-bottom: 5px;
+  }
+}
