@@ -6,13 +6,13 @@ import {
   OnInit,
 } from '@angular/core';
 import { FormControl, ReactiveFormsModule } from '@angular/forms';
-import { RouterLink, RouterOutlet } from '@angular/router';
+import { RouterOutlet } from '@angular/router';
 import { Subscription } from 'rxjs';
 import { ListPageStore } from './list-page.store';
 
 @Component({
   selector: 'app-list-page',
-  imports: [RouterOutlet, RouterLink, ReactiveFormsModule],
+  imports: [RouterOutlet, ReactiveFormsModule],
   templateUrl: './list-page.component.html',
   styleUrl: './list-page.component.scss',
   providers: [ListPageStore],

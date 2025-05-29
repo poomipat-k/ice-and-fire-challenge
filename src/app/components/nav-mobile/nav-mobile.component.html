@@ -14,14 +14,99 @@
   }"
 >
   <div class="menu__container">
-    <a routerLink="/" (click)="store.closeNav()" class="menu__link">Home</a>
-    <div class="menu__group">
-      <div>Favorites</div>
-      <div class="menu__expand-icon">></div>
+    <a
+      routerLink="/"
+      (click)="store.closeNav()"
+      class="menu__link"
+      routerLinkActive="menu--active"
+      [routerLinkActiveOptions]="{ exact: true }"
+      >Home</a
+    >
+    <div>
+      <div
+        [ngClass]="{
+          'menu__group-header': true,
+          'menu__group-header--active': store.showFavorites()
+        }"
+        (click)="store.toggleFavorites()"
+      >
+        <div>Favorites</div>
+        <div class="menu__expand-icon">></div>
+      </div>
+      <div
+        [ngClass]="{
+          'menu__group-list': true,
+          'menu__group-list--expanded': store.showFavorites()
+        }"
+      >
+        <a
+          routerLink="/favorites/books"
+          (click)="store.closeNav()"
+          class="menu__link"
+          routerLinkActive="menu--active"
+          [routerLinkActiveOptions]="{ exact: true }"
+          >Books</a
+        >
+        <a
+          routerLink="/favorites/houses"
+          (click)="store.closeNav()"
+          class="menu__link"
+          routerLinkActive="menu--active"
+          [routerLinkActiveOptions]="{ exact: true }"
+          >Houses</a
+        >
+        <a
+          routerLink="/favorites/characters"
+          (click)="store.closeNav()"
+          class="menu__link"
+          routerLinkActive="menu--active"
+          [routerLinkActiveOptions]="{ exact: true }"
+          >Characters</a
+        >
+      </div>
     </div>
-    <div class="menu__group">
-      <div>Lists</div>
-      <div class="menu__expand-icon">></div>
+    <div>
+      <div
+        [ngClass]="{
+          'menu__group-header': true,
+          'menu__group-header--active': store.showList()
+        }"
+        (click)="store.toggleList()"
+      >
+        <div>Lists</div>
+        <div class="menu__expand-icon">></div>
+      </div>
+      <div
+        [ngClass]="{
+          'menu__group-list': true,
+          'menu__group-list--expanded': store.showList()
+        }"
+      >
+        <a
+          routerLink="/list/books"
+          (click)="store.closeNav()"
+          class="menu__link"
+          routerLinkActive="menu--active"
+          [routerLinkActiveOptions]="{ exact: true }"
+          >Books</a
+        >
+        <a
+          routerLink="/list/houses"
+          (click)="store.closeNav()"
+          class="menu__link"
+          routerLinkActive="menu--active"
+          [routerLinkActiveOptions]="{ exact: true }"
+          >Houses</a
+        >
+        <a
+          routerLink="/list/characters"
+          (click)="store.closeNav()"
+          class="menu__link"
+          routerLinkActive="menu--active"
+          [routerLinkActiveOptions]="{ exact: true }"
+          >Characters</a
+        >
+      </div>
     </div>
   </div>
 </div>

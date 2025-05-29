@@ -27,17 +27,13 @@ $active-color: #feb273;
     display: block;
     margin-bottom: 6px;
   }
-
-  &:active {
-    filter: brightness(140%);
-  }
 }
 
 .menu {
   background-color: #424242;
   height: 100vh;
   position: absolute;
-  z-index: 2;
+  z-index: 10;
   transition: all 100ms ease-in-out;
 
   &--open {
@@ -57,7 +53,6 @@ $active-color: #feb273;
 
   &__link {
     padding: 8px 0 8px 16px;
-    // border: 1px solid blue;
     color: #fff;
     text-decoration: none;
     font-size: 18px;
@@ -66,16 +61,42 @@ $active-color: #feb273;
   }
 
   &__group {
-    display: flex;
-    justify-content: space-between;
-    padding: 8px 16px 8px 16px;
-    color: #fff;
-    font-size: 18px;
-    line-height: 27px;
+    &-header {
+      display: flex;
+      justify-content: space-between;
+      padding: 8px 16px 8px 16px;
+      color: #fff;
+      font-size: 18px;
+      line-height: 27px;
+      // border: 1px solid blue;
+
+      &--active {
+        background-color: #feb273;
+      }
+    }
+
+    &-list {
+      visibility: hidden;
+      padding-left: 24px;
+      max-height: 0;
+      transition: all 300ms ease-in-out;
+      overflow: hidden;
+
+      &--expanded {
+        visibility: visible;
+        max-height: 126px; // 43*3
+        transition: all 300ms ease-in-out;
+        z-index: 10;
+      }
+    }
   }
 
   &__expand-icon {
     font-size: 24px;
+  }
+
+  &--active {
+    color: $active-color;
   }
 }
 
