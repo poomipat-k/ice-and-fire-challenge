@@ -4,15 +4,20 @@
   <span class="icon__hamburger"></span>
 </div>
 
-<!-- @if (store.displayMenu())  -->
-
 <div
   [ngClass]="{
     menu: true,
     'menu--open': store.displayMenu(),
     'menu--close': !store.displayMenu()
   }"
-></div>
+>
+  <ul class="menu__links">
+    <li class="menu__link">Home</li>
+    <li class="menu__link">Favorites</li>
+    <li class="menu__link">List Pages</li>
+  </ul>
+</div>
+
 @if (store.displayMenu()) {
 <div class="backdrop" (click)="store.toggleDisplayMenu()"></div>
 }

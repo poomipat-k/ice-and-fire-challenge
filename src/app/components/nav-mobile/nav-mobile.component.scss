@@ -22,12 +22,31 @@
   }
 }
 
+.animate-toggle {
+  animation: toggle 1s;
+}
+
 .menu {
   background-color: #424242;
   height: 100vh;
   position: absolute;
   z-index: 2;
-  transition: all 200ms ease-in-out;
+  transition: all 150ms ease-in-out;
+
+  &__links {
+    color: #fff;
+    padding: 16px;
+    list-style: none;
+    font-size: 18px;
+    line-height: 27px;
+    border: 1px solid red;
+
+    overflow: hidden;
+    white-space: nowrap;
+  }
+
+  &__link {
+  }
 
   &--open {
     width: 250px;
