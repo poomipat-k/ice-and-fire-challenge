@@ -1,15 +1,28 @@
-import { patchState, signalStore, withMethods, withState } from '@ngrx/signals';
+import { inject } from '@angular/core';
+import { Event, NavigationEnd, Router, RouterEvent } from '@angular/router';
+import {
+  patchState,
+  signalStore,
+  withHooks,
+  withMethods,
+  withState,
+} from '@ngrx/signals';
+import { filter } from 'rxjs';
 
 type NavNonMobileState = {
   navigating: boolean;
   showFavorites: boolean;
   showList: boolean;
+  favActive: boolean;
+  listActive: boolean;
 };
 
 const initialState: NavNonMobileState = {
   navigating: false,
   showFavorites: false,
   showList: false,
+  favActive: false,
+  listActive: false,
 };
 
 export const NavNonMobileStore = signalStore(
@@ -37,5 +50,23 @@ export const NavNonMobileStore = signalStore(
         showFavorites: false,
       }));
     },
-  }))
+  })),
+  withHooks({
+    onInit(store, router = inject(Router)) {
+      // Check navbar active from current url path
+      router.events
+        .pipe(
+          filter(
+            (e: Event | RouterEvent): e is RouterEvent =>
+              e instanceof RouterEvent && e instanceof NavigationEnd
+          )
+        )
+        .subscribe((e: RouterEvent) => {
+          patchState(store, {
+            favActive: e.url.startsWith('/favorites/'),
+            listActive: e.url.startsWith('/list/'),
+          });
+        });
+    },
+  })
 );

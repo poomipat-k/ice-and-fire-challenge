@@ -3,7 +3,10 @@
     <app-com-svg-iron-throne></app-com-svg-iron-throne>
   </a>
   <div class="navbar__items">
-    <div class="navbar__group" (click)="store.toggleFavorites()">
+    <div
+      [ngClass]="{ navbar__group: true, active: store.favActive() }"
+      (click)="store.toggleFavorites()"
+    >
       <div>Favorites</div>
       <div class="navbar__group-arrow">
         <app-com-svg-arrow-down></app-com-svg-arrow-down>
@@ -15,14 +18,30 @@
           'navbar__menu--display': store.showFavorites()
         }"
       >
-        <a class="navbar__menu-link" routerLink="/favorites/books">Books</a>
-        <a class="navbar__menu-link" routerLink="/favorites/houses">Houses</a>
-        <a class="navbar__menu-link" routerLink="/favorites/characters"
+        <a
+          class="navbar__menu-link"
+          routerLink="/favorites/books"
+          routerLinkActive="active"
+          >Books</a
+        >
+        <a
+          class="navbar__menu-link"
+          routerLink="/favorites/houses"
+          routerLinkActive="active"
+          >Houses</a
+        >
+        <a
+          class="navbar__menu-link"
+          routerLink="/favorites/characters"
+          routerLinkActive="active"
           >Characters</a
         >
       </div>
     </div>
-    <div class="navbar__group" (click)="store.toggleList()">
+    <div
+      [ngClass]="{ navbar__group: true, active: store.listActive() }"
+      (click)="store.toggleList()"
+    >
       <div>Lists</div>
       <div class="navbar__group-arrow">
         <app-com-svg-arrow-down></app-com-svg-arrow-down>

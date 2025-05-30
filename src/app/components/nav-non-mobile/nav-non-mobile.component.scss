@@ -85,6 +85,10 @@ $active-color: #feb273;
   }
 }
 
+.active {
+  color: $active-color;
+}
+
 .backdrop {
   background-color: rgba(189, 189, 189, 0.6);
   width: 100%;
