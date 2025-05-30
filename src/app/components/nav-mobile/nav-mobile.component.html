@@ -1,9 +1,15 @@
-<div class="icon" (click)="store.toggleNav()">
-  <div class="icon__box">
-    <span class="icon__hamburger"></span>
-    <span class="icon__hamburger"></span>
-    <span class="icon__hamburger"></span>
+<div class="navbar">
+  <div class="icon" (click)="store.toggleNav()">
+    <div class="icon__box">
+      <span class="icon__hamburger"></span>
+      <span class="icon__hamburger"></span>
+      <span class="icon__hamburger"></span>
+    </div>
   </div>
+
+  <a routerLink="/" class="logo">
+    <app-com-svg-iron-throne></app-com-svg-iron-throne>
+  </a>
 </div>
 
 <div
@@ -31,7 +37,14 @@
         (click)="store.toggleFavorites()"
       >
         <div>Favorites</div>
-        <div class="menu__expand-icon">></div>
+        <div
+          [ngClass]="{
+            'menu__expand-icon': true,
+            'menu__expand-icon--active': store.showFavorites()
+          }"
+        >
+          >
+        </div>
       </div>
       <div
         [ngClass]="{
@@ -74,7 +87,14 @@
         (click)="store.toggleList()"
       >
         <div>Lists</div>
-        <div class="menu__expand-icon">></div>
+        <div
+          [ngClass]="{
+            'menu__expand-icon': true,
+            'menu__expand-icon--active': store.showList()
+          }"
+        >
+          >
+        </div>
       </div>
       <div
         [ngClass]="{
