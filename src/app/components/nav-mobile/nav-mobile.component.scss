@@ -1,9 +1,11 @@
+@use "../../../styles.scss";
+
 $active-color: #feb273;
 
 .navbar {
   display: flex;
   gap: 12px;
-  height: 45px;
+  height: styles.$navbar-height;
 }
 
 .icon {
@@ -90,7 +92,7 @@ $active-color: #feb273;
 
       &--expanded {
         visibility: visible;
-        max-height: 126px; // 43*3
+        max-height: 129px; // 43*3
         transition: all 200ms ease-in-out;
         z-index: 10;
       }
@@ -116,5 +118,5 @@ $active-color: #feb273;
   width: 100%;
   height: 100vh;
   position: absolute;
-  z-index: 1;
+  z-index: 5;
 }

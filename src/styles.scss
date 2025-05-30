@@ -1,14 +1,10 @@
 /* You can add global styles to this file, and also import other style files */
 
 $non-mobile-bp: 441px;
+$navbar-height: 45px;
 
 html {
   scroll-behavior: smooth;
-  box-sizing: border-box;
-}
-
-body {
-  box-sizing: border-box;
 }
 
 *,
@@ -16,4 +12,5 @@ body {
 *::before {
   margin: 0;
   padding: 0;
+  box-sizing: border-box;
 }
