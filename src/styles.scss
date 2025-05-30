@@ -1,9 +1,10 @@
 /* You can add global styles to this file, and also import other style files */
 
 $non-mobile-bp: 441px;
+$navbar-height: 45px;
 
-body {
-  box-sizing: border-box;
+html {
+  scroll-behavior: smooth;
 }
 
 *,
@@ -11,11 +12,6 @@ body {
 *::before {
   margin: 0;
   padding: 0;
-  //   box-sizing: inherit;
   box-sizing: border-box;
+  -webkit-tap-highlight-color: transparent;
 }
-
-// ol,
-// ul {
-//   padding-left: 16.4px;
-// }

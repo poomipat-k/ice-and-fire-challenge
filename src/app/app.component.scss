@@ -1,10 +1,37 @@
-.navbar {
-  padding: 12px;
-  background-color: salmon;
+@use "../styles.scss";
+
+.navbar-mobile {
+  display: block;
+  background-color: #2f2f2f;
+  height: styles.$navbar-height;
+  width: 100%;
+  z-index: 100;
+  position: fixed;
+  top: 0;
+  left: 0;
+}
+
+.navbar-non-mobile {
+  display: none;
+}
+
+.main {
+  padding-top: styles.$navbar-height;
 }
 
 @media screen and (min-width: 441px) {
-  .navbar {
-    background-color: beige;
+  .navbar-mobile {
+    display: none;
+  }
+
+  .navbar-non-mobile {
+    display: block;
+    background-color: #2f2f2f;
+    height: styles.$navbar-height;
+    width: 100%;
+    z-index: 100;
+    position: fixed;
+    top: 0;
+    left: 0;
   }
 }

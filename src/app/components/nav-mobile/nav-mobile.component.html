@@ -1,0 +1,130 @@
+<div class="navbar">
+  <div class="icon" (click)="store.toggleNav()">
+    <div class="icon__box">
+      <span class="icon__hamburger"></span>
+      <span class="icon__hamburger"></span>
+      <span class="icon__hamburger"></span>
+    </div>
+  </div>
+
+  <a routerLink="/" class="logo">
+    <app-com-svg-iron-throne></app-com-svg-iron-throne>
+  </a>
+</div>
+
+<div
+  [ngClass]="{
+    menu: true,
+    'menu--open': store.displayMenu(),
+    'menu--close': !store.displayMenu()
+  }"
+>
+  <div class="menu__container">
+    <a
+      routerLink="/"
+      (click)="store.closeNav()"
+      class="menu__link"
+      routerLinkActive="menu--active"
+      [routerLinkActiveOptions]="{ exact: true }"
+      >Home</a
+    >
+    <div>
+      <div
+        [ngClass]="{
+          'menu__group-header': true,
+          'menu__group-header--active': store.showFavorites()
+        }"
+        (click)="store.toggleFavorites()"
+      >
+        <div>Favorites</div>
+        <div
+          [ngClass]="{
+            'menu__expand-icon': true,
+            'menu__expand-icon--active': store.showFavorites()
+          }"
+        >
+          >
+        </div>
+      </div>
+      <div
+        [ngClass]="{
+          'menu__group-list': true,
+          'menu__group-list--expanded': store.showFavorites()
+        }"
+      >
+        <a
+          routerLink="/favorites/books"
+          (click)="store.closeNav()"
+          class="menu__link"
+          routerLinkActive="menu--active"
+          >Books</a
+        >
+        <a
+          routerLink="/favorites/houses"
+          (click)="store.closeNav()"
+          class="menu__link"
+          routerLinkActive="menu--active"
+          >Houses</a
+        >
+        <a
+          routerLink="/favorites/characters"
+          (click)="store.closeNav()"
+          class="menu__link"
+          routerLinkActive="menu--active"
+          >Characters</a
+        >
+      </div>
+    </div>
+    <div>
+      <div
+        [ngClass]="{
+          'menu__group-header': true,
+          'menu__group-header--active': store.showList()
+        }"
+        (click)="store.toggleList()"
+      >
+        <div>Lists</div>
+        <div
+          [ngClass]="{
+            'menu__expand-icon': true,
+            'menu__expand-icon--active': store.showList()
+          }"
+        >
+          >
+        </div>
+      </div>
+      <div
+        [ngClass]="{
+          'menu__group-list': true,
+          'menu__group-list--expanded': store.showList()
+        }"
+      >
+        <a
+          routerLink="/list/books"
+          (click)="store.closeNav()"
+          class="menu__link"
+          routerLinkActive="menu--active"
+          >Books</a
+        >
+        <a
+          routerLink="/list/houses"
+          (click)="store.closeNav()"
+          class="menu__link"
+          routerLinkActive="menu--active"
+          >Houses</a
+        >
+        <a
+          routerLink="/list/characters"
+          (click)="store.closeNav()"
+          class="menu__link"
+          routerLinkActive="menu--active"
+          >Characters</a
+        >
+      </div>
+    </div>
+  </div>
+</div>
+
+@if (store.displayMenu()) {
+<div class="backdrop" (click)="store.toggleNav()"></div>
+}

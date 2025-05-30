@@ -1,4 +1,10 @@
-import { Component, inject, Injector, OnInit } from '@angular/core';
+import {
+  ChangeDetectionStrategy,
+  Component,
+  inject,
+  Injector,
+  OnInit,
+} from '@angular/core';
 import { CardCharacterComponent } from '../../components/card-character/card-character.component';
 import { ListPageStore } from '../list-page.store';
 
@@ -7,6 +13,8 @@ import { ListPageStore } from '../list-page.store';
   imports: [CardCharacterComponent],
   templateUrl: './list-characters-page.component.html',
   styleUrl: './list-characters-page.component.scss',
+  providers: [ListPageStore],
+  changeDetection: ChangeDetectionStrategy.OnPush,
 })
 export class ListCharactersPageComponent implements OnInit {
   readonly store = inject(ListPageStore);

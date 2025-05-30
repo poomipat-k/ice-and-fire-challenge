@@ -1,0 +1,68 @@
+<nav class="navbar">
+  <a routerLink="/" class="navbar__logo" (click)="store.stopNavigating()">
+    <app-com-svg-iron-throne></app-com-svg-iron-throne>
+  </a>
+  <div class="navbar__items">
+    <div
+      [ngClass]="{ navbar__group: true, active: store.favActive() }"
+      (click)="store.toggleFavorites()"
+    >
+      <div>Favorites</div>
+      <div class="navbar__group-arrow">
+        <app-com-svg-arrow-down></app-com-svg-arrow-down>
+      </div>
+
+      <div
+        [ngClass]="{
+          navbar__menu: true,
+          'navbar__menu--display': store.showFavorites()
+        }"
+      >
+        <a
+          class="navbar__menu-link"
+          routerLink="/favorites/books"
+          routerLinkActive="active"
+          >Books</a
+        >
+        <a
+          class="navbar__menu-link"
+          routerLink="/favorites/houses"
+          routerLinkActive="active"
+          >Houses</a
+        >
+        <a
+          class="navbar__menu-link"
+          routerLink="/favorites/characters"
+          routerLinkActive="active"
+          >Characters</a
+        >
+      </div>
+    </div>
+    <div
+      [ngClass]="{ navbar__group: true, active: store.listActive() }"
+      (click)="store.toggleList()"
+    >
+      <div>Lists</div>
+      <div class="navbar__group-arrow">
+        <app-com-svg-arrow-down></app-com-svg-arrow-down>
+      </div>
+
+      <div
+        [ngClass]="{
+          navbar__menu: true,
+          'navbar__menu--display': store.showList()
+        }"
+      >
+        <a class="navbar__menu-link" routerLink="/list/books">Books</a>
+        <a class="navbar__menu-link" routerLink="/list/houses">Houses</a>
+        <a class="navbar__menu-link" routerLink="/list/characters"
+          >Characters</a
+        >
+      </div>
+    </div>
+  </div>
+</nav>
+
+@if (store.navigating()) {
+<div class="backdrop" (click)="store.stopNavigating()"></div>
+}
