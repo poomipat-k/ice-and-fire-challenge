@@ -1,16 +1,32 @@
 import { HttpResponse } from '@angular/common/http';
 import { inject } from '@angular/core';
+import { Event, NavigationEnd, Router, RouterEvent } from '@angular/router';
 import { tapResponse } from '@ngrx/operators';
-import { patchState, signalStore, withMethods, withState } from '@ngrx/signals';
+import {
+  patchState,
+  signalStore,
+  withHooks,
+  withMethods,
+  withState,
+} from '@ngrx/signals';
 import { rxMethod } from '@ngrx/signals/rxjs-interop';
 import { parse } from 'http-link-header';
-import { debounceTime, distinctUntilChanged, pipe, switchMap, tap } from 'rxjs';
+import {
+  debounceTime,
+  distinctUntilChanged,
+  filter,
+  pipe,
+  switchMap,
+  tap,
+} from 'rxjs';
 import { BooksService } from '../services/books.service';
 import { CharactersService } from '../services/characters.service';
 import { HousesService } from '../services/houses.service';
 import { Book } from '../shared/models/book';
 import { Character } from '../shared/models/character';
 import { House } from '../shared/models/house';
+
+const DEFAULT_PAGE_SIZE = 20;
 
 type ListPageState = {
   resource: 'books' | 'houses' | 'characters';
@@ -40,14 +56,32 @@ const initialState: ListPageState = {
   houses: [],
   characters: [],
   query: '',
-  booksFilter: { page: 1, pageSize: 10 },
-  housesFilter: { page: 1, pageSize: 10 },
-  charactersFilter: { page: 1, pageSize: 10 },
+  booksFilter: { page: 1, pageSize: DEFAULT_PAGE_SIZE },
+  housesFilter: { page: 1, pageSize: DEFAULT_PAGE_SIZE },
+  charactersFilter: { page: 1, pageSize: DEFAULT_PAGE_SIZE },
 };
 
 export const ListPageStore = signalStore(
   // state
   withState(initialState),
+  // Hooks
+  withHooks({
+    onInit(store, router = inject(Router)) {
+      // Check navbar active from current url path
+      router.events
+        .pipe(
+          filter(
+            (e: Event | RouterEvent): e is RouterEvent =>
+              e instanceof RouterEvent && e instanceof NavigationEnd
+          )
+        )
+        .subscribe((e: RouterEvent) => {
+          patchState(store, {
+            resource: getResourceType(e.url),
+          });
+        });
+    },
+  }),
   // methods
   withMethods(
     (
@@ -73,7 +107,7 @@ export const ListPageStore = signalStore(
           distinctUntilChanged(),
           tap(() => patchState(store, { isLoading: true })),
           switchMap((query) => {
-            return booksService.getByQuery(query, 1, 10).pipe(
+            return booksService.getByQuery(query, 1, DEFAULT_PAGE_SIZE).pipe(
               tapResponse({
                 next: (res) => {
                   console.log('===res: ', res);
@@ -105,7 +139,7 @@ export const ListPageStore = signalStore(
           distinctUntilChanged(),
           tap(() => patchState(store, { isLoading: true })),
           switchMap((query) => {
-            return housesService.getByQuery(query, 1, 10).pipe(
+            return housesService.getByQuery(query, 1, DEFAULT_PAGE_SIZE).pipe(
               tapResponse({
                 next: (res) => {
                   console.log('===res: ', res);
@@ -137,31 +171,45 @@ export const ListPageStore = signalStore(
           distinctUntilChanged(),
           tap(() => patchState(store, { isLoading: true })),
           switchMap((query) => {
-            return charactersService.getByQuery(query, 1, 10).pipe(
-              tapResponse({
-                next: (res: HttpResponse<Character[]>) => {
-                  console.log('===res: ', res);
-                  const linkHeader = res?.headers?.get('Link');
-                  console.log(linkHeader);
-                  if (linkHeader) {
-                    const parsedLinks = parse(linkHeader);
-                    console.log('==Parsed Link Header:', parsedLinks);
-                  }
-                  patchState(store, {
-                    characters: res.body || [],
-                    isLoading: false,
-                  });
-                },
-                error: (err) => {
-                  patchState(store, { isLoading: false });
-                  console.error(err);
-                },
-                finalize: () => patchState(store, { isLoading: false }),
-              })
-            );
+            return charactersService
+              .getByQuery(query, 1, DEFAULT_PAGE_SIZE)
+              .pipe(
+                tapResponse({
+                  next: (res: HttpResponse<Character[]>) => {
+                    console.log('===res: ', res);
+                    const linkHeader = res?.headers?.get('Link');
+                    console.log(linkHeader);
+                    if (linkHeader) {
+                      const parsedLinks = parse(linkHeader);
+                      console.log('==Parsed Link Header:', parsedLinks);
+                    }
+                    patchState(store, {
+                      characters: res.body || [],
+                      isLoading: false,
+                    });
+                  },
+                  error: (err) => {
+                    patchState(store, { isLoading: false });
+                    console.error(err);
+                  },
+                  finalize: () => patchState(store, { isLoading: false }),
+                })
+              );
           })
         )
       ),
     })
   )
 );
+
+function getResourceType(url: string): 'books' | 'houses' | 'characters' {
+  const resource = url.replace('/list/', '');
+  if (
+    resource === 'books' ||
+    resource === 'houses' ||
+    resource === 'characters'
+  ) {
+    return resource;
+  }
+  return 'books';
+}

@@ -1,3 +1,4 @@
+import { TitleCasePipe } from '@angular/common';
 import {
   ChangeDetectionStrategy,
   Component,
@@ -12,7 +13,7 @@ import { ListPageStore } from './list-page.store';
 
 @Component({
   selector: 'app-list-page',
-  imports: [RouterOutlet, ReactiveFormsModule],
+  imports: [RouterOutlet, ReactiveFormsModule, TitleCasePipe],
   templateUrl: './list-page.component.html',
   styleUrl: './list-page.component.scss',
   providers: [ListPageStore],
@@ -26,7 +27,6 @@ export class ListPageComponent implements OnInit, OnDestroy {
 
   ngOnInit(): void {
     this.store.updateQuery('');
-    this.store.changeResource('houses');
 
     const querySub = this.searchText?.valueChanges?.subscribe((query) => {
       this.store.updateQuery(query || '');
