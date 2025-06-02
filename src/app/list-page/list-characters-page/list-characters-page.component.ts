@@ -21,7 +21,7 @@ export class ListCharactersPageComponent implements OnInit {
   readonly #injector = inject(Injector);
 
   ngOnInit(): void {
-    this.store.loadCharactersByQuery(this.store.charactersPayload, {
+    this.store.loadCharactersByQuery(this.store.charactersFilter, {
       injector: this.#injector,
     });
   }

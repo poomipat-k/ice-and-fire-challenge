@@ -20,7 +20,7 @@ export class ListBookPageComponent implements OnInit {
   readonly #injector = inject(Injector);
 
   ngOnInit(): void {
-    this.store.loadBooksByQuery(this.store.booksPayload, {
+    this.store.loadBooksByQuery(this.store.booksFilter, {
       injector: this.#injector,
     });
   }

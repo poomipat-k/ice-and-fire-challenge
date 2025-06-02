@@ -1,12 +1,11 @@
 import { HttpResponse } from '@angular/common/http';
-import { computed, inject } from '@angular/core';
+import { inject } from '@angular/core';
 import { FormControl } from '@angular/forms';
 import { Event, NavigationEnd, Router, RouterEvent } from '@angular/router';
 import { tapResponse } from '@ngrx/operators';
 import {
   patchState,
   signalStore,
-  withComputed,
   withHooks,
   withMethods,
   withState,
@@ -33,7 +32,7 @@ const DEBOUNCE_TIME = 400;
 
 type QueryPayload = {
   query: string;
-  pageNo: number;
+  page: number;
   pageSize: number;
 };
 
@@ -43,16 +42,18 @@ type ListPageState = {
   books: Book[];
   houses: House[];
   characters: Character[];
-  query: string;
   booksFilter: {
+    query: string;
     page: number;
     pageSize: number;
   };
   housesFilter: {
+    query: string;
     page: number;
     pageSize: number;
   };
   charactersFilter: {
+    query: string;
     page: number;
     pageSize: number;
   };
@@ -65,44 +66,19 @@ const initialState: ListPageState = {
   books: [],
   houses: [],
   characters: [],
-  query: '',
-  booksFilter: { page: 1, pageSize: DEFAULT_PAGE_SIZE },
-  housesFilter: { page: 1, pageSize: DEFAULT_PAGE_SIZE },
-  charactersFilter: { page: 1, pageSize: DEFAULT_PAGE_SIZE },
+  booksFilter: { query: '', page: 1, pageSize: DEFAULT_PAGE_SIZE },
+  housesFilter: { query: '', page: 1, pageSize: DEFAULT_PAGE_SIZE },
+  charactersFilter: { query: '', page: 1, pageSize: DEFAULT_PAGE_SIZE },
   queryForm: new FormControl<string>(''),
 };
 
 export const ListPageStore = signalStore(
   // state
   withState(initialState),
-  withComputed((state) => ({
-    booksPayload: computed(() => {
-      return {
-        query: state.query(),
-        pageNo: state.booksFilter.page(),
-        pageSize: state.booksFilter.pageSize(),
-      };
-    }),
-    housesPayload: computed(() => {
-      return {
-        query: state.query(),
-        pageNo: state.housesFilter.page(),
-        pageSize: state.housesFilter.pageSize(),
-      };
-    }),
-    charactersPayload: computed(() => {
-      return {
-        query: state.query(),
-        pageNo: state.charactersFilter.page(),
-        pageSize: state.charactersFilter.pageSize(),
-      };
-    }),
-  })),
   // Hooks
   withHooks({
     onInit(store, router = inject(Router)) {
       // Check current active url
-      console.log('===INIT HOOKS');
       router.events
         .pipe(
           filter(
@@ -111,13 +87,19 @@ export const ListPageStore = signalStore(
           )
         )
         .subscribe((e: RouterEvent) => {
-          console.log('===INIT subs');
           patchState(store, {
+            isLoading: true,
             resource: getResourceType(e.url),
-            query: '',
-            booksFilter: { page: 1, pageSize: DEFAULT_PAGE_SIZE },
-            housesFilter: { page: 1, pageSize: DEFAULT_PAGE_SIZE },
-            charactersFilter: { page: 1, pageSize: DEFAULT_PAGE_SIZE },
+            books: [],
+            houses: [],
+            characters: [],
+            booksFilter: { query: '', page: 1, pageSize: DEFAULT_PAGE_SIZE },
+            housesFilter: { query: '', page: 1, pageSize: DEFAULT_PAGE_SIZE },
+            charactersFilter: {
+              query: '',
+              page: 1,
+              pageSize: DEFAULT_PAGE_SIZE,
+            },
           });
           store.queryForm().setValue('');
         });
@@ -131,8 +113,25 @@ export const ListPageStore = signalStore(
       housesService = inject(HousesService),
       charactersService = inject(CharactersService)
     ) => ({
-      updateQuery(query: string): void {
-        patchState(store, { query: query });
+      updateQuery({
+        query,
+        resource,
+      }: {
+        query: string;
+        resource: string;
+      }): void {
+        if (resource === 'books') {
+          patchState(store, (state) => ({
+            booksFilter: { ...state.booksFilter, query: query },
+          }));
+        } else if (resource === 'houses') {
+          patchState(store, (state) => ({
+            housesFilter: { ...state.housesFilter, query: query },
+          }));
+        } else if (resource === 'characters')
+          patchState(store, (state) => ({
+            charactersFilter: { ...state.charactersFilter, query: query },
+          }));
       },
       // RxJs methods
       loadBooksByQuery: rxMethod<QueryPayload>(
@@ -142,7 +141,7 @@ export const ListPageStore = signalStore(
           tap(() => patchState(store, { isLoading: true })),
           switchMap((payload) => {
             return booksService
-              .getByQuery(payload.query, payload.pageNo, payload.pageSize)
+              .getByQuery(payload.query, payload.page, payload.pageSize)
               .pipe(
                 tapResponse({
                   next: (res) => {
@@ -176,7 +175,7 @@ export const ListPageStore = signalStore(
           tap(() => patchState(store, { isLoading: true })),
           switchMap((payload) => {
             return housesService
-              .getByQuery(payload.query, payload.pageNo, payload.pageSize)
+              .getByQuery(payload.query, payload.page, payload.pageSize)
               .pipe(
                 tapResponse({
                   next: (res) => {
@@ -209,8 +208,9 @@ export const ListPageStore = signalStore(
           distinctUntilChanged(),
           tap(() => patchState(store, { isLoading: true })),
           switchMap((payload) => {
+            console.log('==payload', payload);
             return charactersService
-              .getByQuery(payload.query, payload.pageNo, payload.pageSize)
+              .getByQuery(payload.query, payload.page, payload.pageSize)
               .pipe(
                 tapResponse({
                   next: (res: HttpResponse<Character[]>) => {
