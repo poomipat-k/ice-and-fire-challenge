@@ -112,7 +112,7 @@ export const ListPageStore = signalStore(
                 next: (res) => {
                   console.log('===res: ', res);
                   const linkHeader = res?.headers?.get('Link');
-                  console.log(linkHeader);
+
                   if (linkHeader) {
                     const parsedLinks = parse(linkHeader);
                     console.log('==Parsed Link Header:', parsedLinks);
@@ -144,7 +144,7 @@ export const ListPageStore = signalStore(
                 next: (res) => {
                   console.log('===res: ', res);
                   const linkHeader = res?.headers?.get('Link');
-                  console.log(linkHeader);
+
                   if (linkHeader) {
                     const parsedLinks = parse(linkHeader);
                     console.log('==Parsed Link Header:', parsedLinks);
@@ -178,7 +178,7 @@ export const ListPageStore = signalStore(
                   next: (res: HttpResponse<Character[]>) => {
                     console.log('===res: ', res);
                     const linkHeader = res?.headers?.get('Link');
-                    console.log(linkHeader);
+
                     if (linkHeader) {
                       const parsedLinks = parse(linkHeader);
                       console.log('==Parsed Link Header:', parsedLinks);
