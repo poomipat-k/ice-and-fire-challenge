@@ -26,11 +26,10 @@ export class ListPageComponent implements OnInit, OnDestroy {
   private readonly subs: Subscription[] = [];
 
   ngOnInit(): void {
-    this.store.updateQuery('');
-
     const querySub = this.searchText?.valueChanges?.subscribe((query) => {
       this.store.updateQuery(query || '');
     });
+
     this.subs.push(querySub);
   }
 

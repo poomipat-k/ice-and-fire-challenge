@@ -78,6 +78,7 @@ export const ListPageStore = signalStore(
         .subscribe((e: RouterEvent) => {
           patchState(store, {
             resource: getResourceType(e.url),
+            query: '',
           });
         });
     },
@@ -90,15 +91,8 @@ export const ListPageStore = signalStore(
       housesService = inject(HousesService),
       charactersService = inject(CharactersService)
     ) => ({
-      changeResource(resource: 'books' | 'houses' | 'characters'): void {
-        patchState(store, { resource: resource });
-      },
       updateQuery(query: string): void {
-        patchState(store, (state) => ({
-          booksFilter: { ...state.booksFilter, query },
-          housesFilter: { ...state.housesFilter, query },
-          charactersFilter: { ...state.charactersFilter, query },
-        }));
+        patchState(store, { query: query });
       },
       // RxJs methods
       loadBooksByQuery: rxMethod<string>(
@@ -168,7 +162,7 @@ export const ListPageStore = signalStore(
       loadCharactersByQuery: rxMethod<string>(
         pipe(
           debounceTime(300),
-          distinctUntilChanged(),
+          // distinctUntilChanged(),
           tap(() => patchState(store, { isLoading: true })),
           switchMap((query) => {
             return charactersService

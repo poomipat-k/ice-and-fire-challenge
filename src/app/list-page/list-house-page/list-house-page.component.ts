@@ -13,7 +13,6 @@ import { ListPageStore } from '../list-page.store';
   imports: [CardHouseComponent],
   templateUrl: './list-house-page.component.html',
   styleUrl: './list-house-page.component.scss',
-  providers: [ListPageStore],
   changeDetection: ChangeDetectionStrategy.OnPush,
 })
 export class ListHousePageComponent implements OnInit {

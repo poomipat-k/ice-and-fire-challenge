@@ -13,7 +13,6 @@ import { ListPageStore } from '../list-page.store';
   imports: [CardBookComponent],
   templateUrl: './list-book-page.component.html',
   styleUrl: './list-book-page.component.scss',
-  providers: [ListPageStore],
   changeDetection: ChangeDetectionStrategy.OnPush,
 })
 export class ListBookPageComponent implements OnInit {
@@ -21,8 +20,6 @@ export class ListBookPageComponent implements OnInit {
   readonly #injector = inject(Injector);
 
   ngOnInit(): void {
-    this.store.updateQuery('');
-    this.store.changeResource('books');
     const query = this.store.query;
     this.store.loadBooksByQuery(query, { injector: this.#injector });
   }

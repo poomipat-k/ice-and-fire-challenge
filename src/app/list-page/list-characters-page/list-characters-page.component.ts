@@ -13,7 +13,6 @@ import { ListPageStore } from '../list-page.store';
   imports: [CardCharacterComponent],
   templateUrl: './list-characters-page.component.html',
   styleUrl: './list-characters-page.component.scss',
-  providers: [ListPageStore],
   changeDetection: ChangeDetectionStrategy.OnPush,
 })
 export class ListCharactersPageComponent implements OnInit {
@@ -21,8 +20,6 @@ export class ListCharactersPageComponent implements OnInit {
   readonly #injector = inject(Injector);
 
   ngOnInit(): void {
-    this.store.updateQuery('');
-    this.store.changeResource('characters');
     this.store.loadCharactersByQuery(this.store.query, {
       injector: this.#injector,
     });
