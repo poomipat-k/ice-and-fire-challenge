@@ -1,5 +1,7 @@
 <div class="container">
-  @for (character of store.characters(); track $index) {
+  @if (store.isLoading()) {
+  <h1>Loading ...</h1>
+  } @else { @for (character of store.characters(); track $index) {
   <div class="card">
     <app-com-card-character
       [redirectTo]="getDetailsPath(character.url)"
@@ -8,5 +10,5 @@
       [gender]="character.gender"
     ></app-com-card-character>
   </div>
-  }
+  } }
 </div>

@@ -1,5 +1,7 @@
 <div class="container">
-  @for (book of store.books(); track $index) {
+  @if (store.isLoading()) {
+  <h1>Loading ...</h1>
+  } @else { @for (book of store.books(); track $index) {
   <div class="card">
     <app-com-card-book
       [redirectTo]="getDetailsPath(book.url)"
@@ -9,5 +11,5 @@
       [released]="book.released"
     ></app-com-card-book>
   </div>
-  }
+  } }
 </div>

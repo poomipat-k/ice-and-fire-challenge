@@ -115,9 +115,6 @@ export const ListPageStore = signalStore(
           patchState(store, {
             resource: getResourceType(e.url),
             query: '',
-            books: [],
-            houses: [],
-            characters: [],
             booksFilter: { page: 1, pageSize: DEFAULT_PAGE_SIZE },
             housesFilter: { page: 1, pageSize: DEFAULT_PAGE_SIZE },
             charactersFilter: { page: 1, pageSize: DEFAULT_PAGE_SIZE },

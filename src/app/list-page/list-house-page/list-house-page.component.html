@@ -1,5 +1,7 @@
 <div class="container">
-  @for (house of store.houses(); track $index) {
+  @if (store.isLoading()) {
+  <h1>Loading ...</h1>
+  } @else { @for (house of store.houses(); track $index) {
   <div class="card">
     <app-com-card-house
       [redirectTo]="getDetailsPath(house.url)"
@@ -7,5 +9,5 @@
       [region]="house.region"
     ></app-com-card-house>
   </div>
-  }
+  } }
 </div>
