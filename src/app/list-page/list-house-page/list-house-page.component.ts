@@ -20,8 +20,9 @@ export class ListHousePageComponent implements OnInit {
   readonly #injector = inject(Injector);
 
   ngOnInit(): void {
-    const query = this.store.query;
-    this.store.loadHousesByQuery(query, { injector: this.#injector });
+    this.store.loadHousesByQuery(this.store.housesPayload, {
+      injector: this.#injector,
+    });
   }
 
   getDetailsPath(url: string): string {
