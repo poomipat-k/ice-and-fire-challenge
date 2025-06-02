@@ -8,7 +8,12 @@
       (click)="store.toggleFavorites()"
     >
       <div>Favorites</div>
-      <div class="navbar__group-arrow">
+      <div
+        [ngClass]="{
+          'navbar__group-arrow': true,
+          'navbar__group-arrow--active': store.showFavorites()
+        }"
+      >
         <app-com-svg-arrow-down></app-com-svg-arrow-down>
       </div>
 
@@ -43,7 +48,12 @@
       (click)="store.toggleList()"
     >
       <div>Lists</div>
-      <div class="navbar__group-arrow">
+      <div
+        [ngClass]="{
+          'navbar__group-arrow': true,
+          'navbar__group-arrow--active': store.showList()
+        }"
+      >
         <app-com-svg-arrow-down></app-com-svg-arrow-down>
       </div>
 

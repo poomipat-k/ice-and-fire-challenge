@@ -40,7 +40,12 @@ $active-color: #feb273;
 
     &-arrow {
       position: relative;
-      top: 4px;
+      transform: translateY(4px);
+      transition: all 200ms ease-in-out;
+
+      &--active {
+        transform: translateY(-4px) rotate(180deg);
+      }
     }
   }
 
