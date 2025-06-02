@@ -22,7 +22,6 @@ import { ListPageStore } from './list-page.store';
 export class ListPageComponent implements OnInit, OnDestroy {
   readonly store = inject(ListPageStore);
 
-  // readonly searchText = new FormControl<string>('');
   private readonly subs: Subscription[] = [];
 
   ngOnInit(): void {

@@ -5,6 +5,7 @@ import {
   Injector,
   OnInit,
 } from '@angular/core';
+
 import { CardCharacterComponent } from '../../components/card-character/card-character.component';
 import { ListPageStore } from '../list-page.store';
 
@@ -20,7 +21,7 @@ export class ListCharactersPageComponent implements OnInit {
   readonly #injector = inject(Injector);
 
   ngOnInit(): void {
-    this.store.loadCharactersByQuery(this.store.query, {
+    this.store.loadCharactersByQuery(this.store.charactersPayload, {
       injector: this.#injector,
     });
   }

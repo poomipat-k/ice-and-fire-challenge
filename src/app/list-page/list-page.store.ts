@@ -1,11 +1,12 @@
 import { HttpResponse } from '@angular/common/http';
-import { inject } from '@angular/core';
+import { computed, inject } from '@angular/core';
 import { FormControl } from '@angular/forms';
 import { Event, NavigationEnd, Router, RouterEvent } from '@angular/router';
 import { tapResponse } from '@ngrx/operators';
 import {
   patchState,
   signalStore,
+  withComputed,
   withHooks,
   withMethods,
   withState,
@@ -67,10 +68,19 @@ const initialState: ListPageState = {
 export const ListPageStore = signalStore(
   // state
   withState(initialState),
+  withComputed((state) => ({
+    charactersPayload: computed(() => {
+      return {
+        query: state.query(),
+        pageNo: state.charactersFilter.page(),
+        pageSize: state.charactersFilter.pageSize(),
+      };
+    }),
+  })),
   // Hooks
   withHooks({
     onInit(store, router = inject(Router)) {
-      // Check navbar active from current url path
+      // Check current active url
       router.events
         .pipe(
           filter(
@@ -163,14 +173,18 @@ export const ListPageStore = signalStore(
         )
       ),
 
-      loadCharactersByQuery: rxMethod<string>(
+      loadCharactersByQuery: rxMethod<{
+        query: string;
+        pageNo: number;
+        pageSize: number;
+      }>(
         pipe(
           debounceTime(300),
-          // distinctUntilChanged(),
+          distinctUntilChanged(),
           tap(() => patchState(store, { isLoading: true })),
-          switchMap((query) => {
+          switchMap((payload) => {
             return charactersService
-              .getByQuery(query, 1, DEFAULT_PAGE_SIZE)
+              .getByQuery(payload.query, payload.pageNo, payload.pageSize)
               .pipe(
                 tapResponse({
                   next: (res: HttpResponse<Character[]>) => {
@@ -200,6 +214,7 @@ export const ListPageStore = signalStore(
   )
 );
 
+// helper functions
 function getResourceType(url: string): 'books' | 'houses' | 'characters' {
   const resource = url.replace('/list/', '');
   if (
