@@ -1,3 +1,4 @@
+import { HttpResponse } from '@angular/common/http';
 import { Observable } from 'rxjs';
 import { Book } from '../models/book';
 import { Character } from '../models/character';
@@ -8,5 +9,5 @@ export interface QueryResource {
     query: string,
     page: number,
     pageSize: number
-  ): Observable<Book[] | House[] | Character[]>;
+  ): Observable<HttpResponse<Book[] | House[] | Character[]>>;
 }

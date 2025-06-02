@@ -1,7 +1,9 @@
+import { HttpResponse } from '@angular/common/http';
 import { inject } from '@angular/core';
 import { tapResponse } from '@ngrx/operators';
 import { patchState, signalStore, withMethods, withState } from '@ngrx/signals';
 import { rxMethod } from '@ngrx/signals/rxjs-interop';
+import { parse } from 'http-link-header';
 import { debounceTime, distinctUntilChanged, pipe, switchMap, tap } from 'rxjs';
 import { BooksService } from '../services/books.service';
 import { CharactersService } from '../services/characters.service';
@@ -73,10 +75,16 @@ export const ListPageStore = signalStore(
           switchMap((query) => {
             return booksService.getByQuery(query, 1, 10).pipe(
               tapResponse({
-                next: (books) => {
-                  console.log('===books: ', books);
+                next: (res) => {
+                  console.log('===res: ', res);
+                  const linkHeader = res?.headers?.get('Link');
+                  console.log(linkHeader);
+                  if (linkHeader) {
+                    const parsedLinks = parse(linkHeader);
+                    console.log('==Parsed Link Header:', parsedLinks);
+                  }
                   patchState(store, {
-                    books: books,
+                    books: res.body || [],
                     isLoading: false,
                   });
                 },
@@ -99,10 +107,16 @@ export const ListPageStore = signalStore(
           switchMap((query) => {
             return housesService.getByQuery(query, 1, 10).pipe(
               tapResponse({
-                next: (houses) => {
-                  console.log('===houses: ', houses);
+                next: (res) => {
+                  console.log('===res: ', res);
+                  const linkHeader = res?.headers?.get('Link');
+                  console.log(linkHeader);
+                  if (linkHeader) {
+                    const parsedLinks = parse(linkHeader);
+                    console.log('==Parsed Link Header:', parsedLinks);
+                  }
                   patchState(store, {
-                    houses: houses,
+                    houses: res.body || [],
                     isLoading: false,
                   });
                 },
@@ -125,10 +139,16 @@ export const ListPageStore = signalStore(
           switchMap((query) => {
             return charactersService.getByQuery(query, 1, 10).pipe(
               tapResponse({
-                next: (characters) => {
-                  console.log('===characters: ', characters);
+                next: (res: HttpResponse<Character[]>) => {
+                  console.log('===res: ', res);
+                  const linkHeader = res?.headers?.get('Link');
+                  console.log(linkHeader);
+                  if (linkHeader) {
+                    const parsedLinks = parse(linkHeader);
+                    console.log('==Parsed Link Header:', parsedLinks);
+                  }
                   patchState(store, {
-                    characters: characters,
+                    characters: res.body || [],
                     isLoading: false,
                   });
                 },
