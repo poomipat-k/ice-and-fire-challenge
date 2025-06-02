@@ -6,7 +6,7 @@ import {
   OnDestroy,
   OnInit,
 } from '@angular/core';
-import { FormControl, ReactiveFormsModule } from '@angular/forms';
+import { ReactiveFormsModule } from '@angular/forms';
 import { RouterOutlet } from '@angular/router';
 import { Subscription } from 'rxjs';
 import { ListPageStore } from './list-page.store';
@@ -22,13 +22,15 @@ import { ListPageStore } from './list-page.store';
 export class ListPageComponent implements OnInit, OnDestroy {
   readonly store = inject(ListPageStore);
 
-  readonly searchText = new FormControl<string>('');
+  // readonly searchText = new FormControl<string>('');
   private readonly subs: Subscription[] = [];
 
   ngOnInit(): void {
-    const querySub = this.searchText?.valueChanges?.subscribe((query) => {
-      this.store.updateQuery(query || '');
-    });
+    const querySub = this.store
+      .queryForm()
+      ?.valueChanges?.subscribe((query) => {
+        this.store.updateQuery(query || '');
+      });
 
     this.subs.push(querySub);
   }

@@ -1,5 +1,6 @@
 import { HttpResponse } from '@angular/common/http';
 import { inject } from '@angular/core';
+import { FormControl } from '@angular/forms';
 import { Event, NavigationEnd, Router, RouterEvent } from '@angular/router';
 import { tapResponse } from '@ngrx/operators';
 import {
@@ -47,6 +48,7 @@ type ListPageState = {
     page: number;
     pageSize: number;
   };
+  queryForm: FormControl<string | null>;
 };
 
 const initialState: ListPageState = {
@@ -59,6 +61,7 @@ const initialState: ListPageState = {
   booksFilter: { page: 1, pageSize: DEFAULT_PAGE_SIZE },
   housesFilter: { page: 1, pageSize: DEFAULT_PAGE_SIZE },
   charactersFilter: { page: 1, pageSize: DEFAULT_PAGE_SIZE },
+  queryForm: new FormControl<string>(''),
 };
 
 export const ListPageStore = signalStore(
@@ -80,6 +83,7 @@ export const ListPageStore = signalStore(
             resource: getResourceType(e.url),
             query: '',
           });
+          store.queryForm().setValue('');
         });
     },
   }),
