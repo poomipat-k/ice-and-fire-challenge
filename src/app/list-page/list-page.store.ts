@@ -204,7 +204,6 @@ export const ListPageStore = signalStore(
                     let hasNextPage = false;
                     if (linkHeader) {
                       const parsedLinks = parse(linkHeader);
-                      console.log('==Parsed Link Header:', parsedLinks);
                       hasNextPage = !!parsedLinks.refs.find(
                         (link) => link.rel === 'next'
                       );
@@ -249,7 +248,6 @@ export const ListPageStore = signalStore(
                     let hasNextPage = false;
                     if (linkHeader) {
                       const parsedLinks = parse(linkHeader);
-                      console.log('==Parsed Link Header:', parsedLinks);
                       hasNextPage = !!parsedLinks.refs.find(
                         (link) => link.rel === 'next'
                       );
@@ -299,7 +297,6 @@ export const ListPageStore = signalStore(
                     let hasNextPage = false;
                     if (linkHeader) {
                       const parsedLinks = parse(linkHeader);
-                      console.log('==Parsed Link Header:', parsedLinks);
                       hasNextPage = !!parsedLinks.refs.find(
                         (link) => link.rel === 'next'
                       );
