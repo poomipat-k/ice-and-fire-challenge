@@ -12,16 +12,23 @@ export class CardHouseComponent {
   redirectTo = input.required<string>();
   name = input.required<string>();
   region = input.required<string>();
+  words = input.required<string>();
+  seats = input.required<string[]>();
 
   houseAttributes = computed<BasicCardData>(() => {
+    let seats = this.seats().join(', ');
     return [
       {
-        key: 'name',
-        val: this.name(),
+        key: 'Region',
+        val: this.region() || '-',
       },
       {
-        key: 'region',
-        val: this.region(),
+        key: 'Words',
+        val: this.words() || '-',
+      },
+      {
+        key: 'Seats',
+        val: seats || '-',
       },
     ];
   });

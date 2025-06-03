@@ -1,6 +1,6 @@
 .card {
   width: 328px;
-  padding: 16px;
+  padding: 20px;
   min-height: 200px;
   border-radius: 16px;
   position: relative;
@@ -33,5 +33,6 @@
     font-size: 24px;
     text-align: center;
     margin-bottom: 16px;
+    min-height: 56px;
   }
 }

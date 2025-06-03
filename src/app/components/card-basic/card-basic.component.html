@@ -4,8 +4,15 @@
     <div class="card__data">
       @for (field of card(); track $index) {
       <div class="card__row">
-        <p class="card__label">{{ field.key }}</p>
-        <p class="card__value">{{ field.val }}</p>
+        <p
+          class="card__label"
+          [style]="{ fontSize: fontSize(), minWidth: labelMinWidth() }"
+        >
+          {{ field.key }}
+        </p>
+        <p class="card__value" [style]="{ fontSize: fontSize() }">
+          {{ field.val }}
+        </p>
       </div>
       }
     </div>

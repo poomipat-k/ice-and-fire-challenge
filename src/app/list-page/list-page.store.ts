@@ -28,7 +28,7 @@ import { Book } from '../shared/models/book';
 import { Character } from '../shared/models/character';
 import { House } from '../shared/models/house';
 
-const DEFAULT_PAGE_SIZE = 10;
+const DEFAULT_PAGE_SIZE = 50;
 const DEBOUNCE_TIME = 400;
 const FILL_EMPTY_CARD_PER_ROW = 9; // assume biggest to support is 4k Monitor
 
