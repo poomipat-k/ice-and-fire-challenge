@@ -42,6 +42,7 @@ type ListPageState = {
   books: Book[];
   houses: House[];
   characters: Character[];
+  hasNextPage: boolean;
   booksFilter: {
     query: string;
     page: number;
@@ -66,6 +67,7 @@ const initialState: ListPageState = {
   books: [],
   houses: [],
   characters: [],
+  hasNextPage: false,
   booksFilter: { query: '', page: 1, pageSize: DEFAULT_PAGE_SIZE },
   housesFilter: { query: '', page: 1, pageSize: DEFAULT_PAGE_SIZE },
   charactersFilter: { query: '', page: 1, pageSize: DEFAULT_PAGE_SIZE },
@@ -94,6 +96,7 @@ export const ListPageStore = signalStore(
             books: [],
             houses: [],
             characters: [],
+            hasNextPage: false,
             booksFilter: { query: '', page: 1, pageSize: DEFAULT_PAGE_SIZE },
             housesFilter: { query: '', page: 1, pageSize: DEFAULT_PAGE_SIZE },
             charactersFilter: {
@@ -179,9 +182,13 @@ export const ListPageStore = signalStore(
                     console.log('===res: ', res);
                     const linkHeader = res?.headers?.get('Link');
 
+                    let hasNextPage = false;
                     if (linkHeader) {
                       const parsedLinks = parse(linkHeader);
                       console.log('==Parsed Link Header:', parsedLinks);
+                      hasNextPage = !!parsedLinks.refs.find(
+                        (link) => link.rel === 'next'
+                      );
                     }
 
                     patchState(store, (state) => {
@@ -192,6 +199,7 @@ export const ListPageStore = signalStore(
                       return {
                         books: newBooks,
                         isLoading: false,
+                        hasNextPage: hasNextPage,
                       };
                     });
                   },
@@ -220,10 +228,15 @@ export const ListPageStore = signalStore(
                     console.log('===res: ', res);
                     const linkHeader = res?.headers?.get('Link');
 
+                    let hasNextPage = false;
                     if (linkHeader) {
                       const parsedLinks = parse(linkHeader);
                       console.log('==Parsed Link Header:', parsedLinks);
+                      hasNextPage = !!parsedLinks.refs.find(
+                        (link) => link.rel === 'next'
+                      );
                     }
+
                     patchState(store, (state) => {
                       let newHouses = [...state.houses];
                       if (res.body) {
@@ -232,6 +245,7 @@ export const ListPageStore = signalStore(
                       return {
                         houses: newHouses,
                         isLoading: false,
+                        hasNextPage: hasNextPage,
                       };
                     });
                   },
@@ -260,9 +274,13 @@ export const ListPageStore = signalStore(
                     console.log('===res: ', res);
                     const linkHeader = res?.headers?.get('Link');
 
+                    let hasNextPage = false;
                     if (linkHeader) {
                       const parsedLinks = parse(linkHeader);
                       console.log('==Parsed Link Header:', parsedLinks);
+                      hasNextPage = !!parsedLinks.refs.find(
+                        (link) => link.rel === 'next'
+                      );
                     }
                     patchState(store, (state) => {
                       let newCharacters = [...state.characters];
@@ -272,6 +290,7 @@ export const ListPageStore = signalStore(
                       return {
                         characters: newCharacters,
                         isLoading: false,
+                        hasNextPage: hasNextPage,
                       };
                     });
                   },
@@ -300,4 +319,8 @@ function getResourceType(url: string): 'books' | 'houses' | 'characters' {
     return resource;
   }
   return 'books';
+}
+
+function getNextPage(url: string): number {
+  return 0;
 }

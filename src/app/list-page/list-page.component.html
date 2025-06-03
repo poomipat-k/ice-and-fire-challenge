@@ -15,7 +15,7 @@
   </div>
 
   <div class="loadMore">
-    @if (!store.isLoading()) {
+    @if (!store.isLoading() && store.hasNextPage()) {
     <button class="loadMore__button" (click)="store.loadMore()">
       Load more {{ store.resource() }}
     </button>
