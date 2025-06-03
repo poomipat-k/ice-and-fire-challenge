@@ -140,7 +140,21 @@ export const ListPageStore = signalStore(
       },
 
       loadMore(): void {
-        if (store.resource() === 'characters') {
+        if (store.resource() === 'books') {
+          patchState(store, (state) => ({
+            booksFilter: {
+              ...state.booksFilter,
+              page: state.booksFilter.page + 1,
+            },
+          }));
+        } else if (store.resource() === 'houses') {
+          patchState(store, (state) => ({
+            housesFilter: {
+              ...state.housesFilter,
+              page: state.housesFilter.page + 1,
+            },
+          }));
+        } else if (store.resource() === 'characters') {
           patchState(store, (state) => ({
             charactersFilter: {
               ...state.charactersFilter,
@@ -169,14 +183,14 @@ export const ListPageStore = signalStore(
                       const parsedLinks = parse(linkHeader);
                       console.log('==Parsed Link Header:', parsedLinks);
                     }
-                    // patchState(store, {
-                    //   books: res.body || [],
-                    //   isLoading: false,
-                    // });
+
                     patchState(store, (state) => {
-                      console.log('==loadBooks state', state);
+                      let newBooks = [...state.books];
+                      if (res.body) {
+                        newBooks = newBooks.concat(res.body);
+                      }
                       return {
-                        books: res.body || [],
+                        books: newBooks,
                         isLoading: false,
                       };
                     });
@@ -210,9 +224,15 @@ export const ListPageStore = signalStore(
                       const parsedLinks = parse(linkHeader);
                       console.log('==Parsed Link Header:', parsedLinks);
                     }
-                    patchState(store, {
-                      houses: res.body || [],
-                      isLoading: false,
+                    patchState(store, (state) => {
+                      let newHouses = [...state.houses];
+                      if (res.body) {
+                        newHouses = newHouses.concat(res.body);
+                      }
+                      return {
+                        houses: newHouses,
+                        isLoading: false,
+                      };
                     });
                   },
                   error: (err) => {
@@ -244,10 +264,6 @@ export const ListPageStore = signalStore(
                       const parsedLinks = parse(linkHeader);
                       console.log('==Parsed Link Header:', parsedLinks);
                     }
-                    // patchState(store, {
-                    //   characters: res.body || [],
-                    //   isLoading: false,
-                    // });
                     patchState(store, (state) => {
                       let newCharacters = [...state.characters];
                       if (res.body) {
