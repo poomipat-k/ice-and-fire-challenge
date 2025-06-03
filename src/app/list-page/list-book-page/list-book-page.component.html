@@ -6,11 +6,13 @@
   </div>
   }
   <!-- fill empty spaces -->
-  @for (item of store.booksEmptySpace(); track $index) {
+  @for (item of store.emptySpace(); track $index) {
   <div class="empty">
     <app-com-card-fill-empty></app-com-card-fill-empty>
   </div>
-  } } @else { @for (book of store.books(); track $index) {
+  } } @else {
+  <!-- Real data -->
+  @for (book of store.books(); track $index) {
   <div class="card">
     <app-com-card-book
       [redirectTo]="getDetailsPath(book.url)"
@@ -23,7 +25,7 @@
   }
 
   <!-- fill empty spaces -->
-  @for (item of store.booksEmptySpace(); track $index) {
+  @for (item of store.emptySpace(); track $index) {
   <div class="empty">
     <app-com-card-fill-empty></app-com-card-fill-empty>
   </div>

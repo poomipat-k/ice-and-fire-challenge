@@ -28,8 +28,9 @@ import { Book } from '../shared/models/book';
 import { Character } from '../shared/models/character';
 import { House } from '../shared/models/house';
 
-const DEFAULT_PAGE_SIZE = 20;
+const DEFAULT_PAGE_SIZE = 10;
 const DEBOUNCE_TIME = 400;
+const FILL_EMPTY_CARD_PER_ROW = 9; // assume biggest to support is 4k Monitor
 
 type QueryPayload = {
   query: string;
@@ -44,6 +45,7 @@ type ListPageState = {
   houses: House[];
   characters: Character[];
   hasNextPage: boolean;
+  emptySpace: number[];
   booksFilter: {
     query: string;
     page: number;
@@ -69,6 +71,7 @@ const initialState: ListPageState = {
   houses: [],
   characters: [],
   hasNextPage: false,
+  emptySpace: [...Array(FILL_EMPTY_CARD_PER_ROW).keys()],
   booksFilter: { query: '', page: 1, pageSize: DEFAULT_PAGE_SIZE },
   housesFilter: { query: '', page: 1, pageSize: DEFAULT_PAGE_SIZE },
   charactersFilter: { query: '', page: 1, pageSize: DEFAULT_PAGE_SIZE },
@@ -125,15 +128,6 @@ export const ListPageStore = signalStore(
         store.charactersFilter().pageSize + store.characters().length;
       return [...Array(total)];
     }),
-    booksEmptySpace: computed(() => [
-      ...Array(store.booksFilter().pageSize - 1),
-    ]),
-    housesEmptySpace: computed(() => [
-      ...Array(store.housesFilter().pageSize - 1),
-    ]),
-    charactersEmptySpace: computed(() => [
-      ...Array(store.charactersFilter().pageSize - 1),
-    ]),
   })),
   // methods
   withMethods(

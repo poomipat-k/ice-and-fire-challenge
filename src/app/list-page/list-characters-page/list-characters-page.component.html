@@ -6,11 +6,13 @@
   </div>
   }
   <!-- fill empty spaces -->
-  @for (item of store.charactersEmptySpace(); track $index) {
+  @for (item of store.emptySpace(); track $index) {
   <div class="empty">
     <app-com-card-fill-empty></app-com-card-fill-empty>
   </div>
-  } } @else { @for (character of store.characters(); track $index) {
+  } } @else {
+  <!-- Real data -->
+  @for (character of store.characters(); track $index) {
   <div class="card">
     <app-com-card-character
       [redirectTo]="getDetailsPath(character.url)"
@@ -21,7 +23,7 @@
   </div>
   }
   <!-- fill empty spaces -->
-  @for (item of store.charactersEmptySpace(); track $index) {
+  @for (item of store.emptySpace(); track $index) {
   <div class="empty">
     <app-com-card-fill-empty></app-com-card-fill-empty>
   </div>
