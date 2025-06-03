@@ -15,7 +15,10 @@
     flex-flow: row wrap;
     gap: 20px;
     justify-content: center;
-    border: 1px solid red;
+  }
+
+  .card {
+    margin-bottom: 0;
   }
 
   .empty {
