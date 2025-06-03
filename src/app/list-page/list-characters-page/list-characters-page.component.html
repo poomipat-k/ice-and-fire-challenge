@@ -1,7 +1,8 @@
 <div class="container">
-  @if (store.isLoading()) {
-  <h1>Loading ...</h1>
-  } @else { @for (character of store.characters(); track $index) {
+  @if (store.isLoading()) { @for (card of store.characterSkeletons(); track
+  $index) {
+  <app-com-card-skeleton></app-com-card-skeleton>
+  } } @else { @for (character of store.characters(); track $index) {
   <div class="card">
     <app-com-card-character
       [redirectTo]="getDetailsPath(character.url)"

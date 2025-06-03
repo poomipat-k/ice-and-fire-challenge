@@ -1,11 +1,12 @@
 import { HttpResponse } from '@angular/common/http';
-import { inject } from '@angular/core';
+import { computed, inject } from '@angular/core';
 import { FormControl } from '@angular/forms';
 import { Event, NavigationEnd, Router, RouterEvent } from '@angular/router';
 import { tapResponse } from '@ngrx/operators';
 import {
   patchState,
   signalStore,
+  withComputed,
   withHooks,
   withMethods,
   withState,
@@ -109,6 +110,15 @@ export const ListPageStore = signalStore(
         });
     },
   }),
+  // computed
+  withComputed((store) => ({
+    characterSkeletons: computed(() => {
+      const total =
+        store.charactersFilter().pageSize + store.characters().length;
+      console.log('==total:', total);
+      return [...Array(total)];
+    }),
+  })),
   // methods
   withMethods(
     (
@@ -179,7 +189,6 @@ export const ListPageStore = signalStore(
               .pipe(
                 tapResponse({
                   next: (res) => {
-                    console.log('===res: ', res);
                     const linkHeader = res?.headers?.get('Link');
 
                     let hasNextPage = false;
@@ -225,7 +234,6 @@ export const ListPageStore = signalStore(
               .pipe(
                 tapResponse({
                   next: (res) => {
-                    console.log('===res: ', res);
                     const linkHeader = res?.headers?.get('Link');
 
                     let hasNextPage = false;
@@ -264,14 +272,18 @@ export const ListPageStore = signalStore(
         pipe(
           debounceTime(DEBOUNCE_TIME),
           distinctUntilChanged(),
-          tap(() => patchState(store, { isLoading: true })),
+          tap(() =>
+            patchState(store, (state) => {
+              console.log('==wait loading state', state);
+              return { isLoading: true };
+            })
+          ),
           switchMap((payload) => {
             return charactersService
               .getByQuery(payload.query, payload.page, payload.pageSize)
               .pipe(
                 tapResponse({
                   next: (res: HttpResponse<Character[]>) => {
-                    console.log('===res: ', res);
                     const linkHeader = res?.headers?.get('Link');
 
                     let hasNextPage = false;
