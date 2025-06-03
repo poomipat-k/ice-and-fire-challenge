@@ -28,11 +28,7 @@ export class ListPageComponent implements OnInit, OnDestroy {
     const querySub = this.store
       .queryForm()
       ?.valueChanges?.subscribe((query) => {
-        console.log('===valueChanges');
-        this.store.updateQuery({
-          query: query || '',
-          resource: this.store.resource(),
-        });
+        this.store.updateQuery(query ?? '');
       });
 
     this.subs.push(querySub);

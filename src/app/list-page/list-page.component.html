@@ -16,7 +16,9 @@
 
   <div class="loadMore">
     @if (!store.isLoading()) {
-    <button class="loadMore__button">Load more {{ store.resource() }}</button>
+    <button class="loadMore__button" (click)="store.loadMore()">
+      Load more {{ store.resource() }}
+    </button>
     }
   </div>
 </section>

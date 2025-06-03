@@ -27,7 +27,7 @@ import { Book } from '../shared/models/book';
 import { Character } from '../shared/models/character';
 import { House } from '../shared/models/house';
 
-const DEFAULT_PAGE_SIZE = 20;
+const DEFAULT_PAGE_SIZE = 10;
 const DEBOUNCE_TIME = 400;
 
 type QueryPayload = {
@@ -87,6 +87,7 @@ export const ListPageStore = signalStore(
           )
         )
         .subscribe((e: RouterEvent) => {
+          // reset states when path changed
           patchState(store, {
             isLoading: true,
             resource: getResourceType(e.url),
@@ -113,26 +114,42 @@ export const ListPageStore = signalStore(
       housesService = inject(HousesService),
       charactersService = inject(CharactersService)
     ) => ({
-      updateQuery({
-        query,
-        resource,
-      }: {
-        query: string;
-        resource: string;
-      }): void {
-        if (resource === 'books') {
+      updateQuery(query: string): void {
+        if (store.resource() === 'books') {
           patchState(store, (state) => ({
-            booksFilter: { ...state.booksFilter, query: query },
+            books: [],
+            booksFilter: { ...state.booksFilter, query: query, page: 1 },
           }));
-        } else if (resource === 'houses') {
+        } else if (store.resource() === 'houses') {
           patchState(store, (state) => ({
-            housesFilter: { ...state.housesFilter, query: query },
+            houses: [],
+            housesFilter: { ...state.housesFilter, query: query, page: 1 },
           }));
-        } else if (resource === 'characters')
-          patchState(store, (state) => ({
-            charactersFilter: { ...state.charactersFilter, query: query },
-          }));
+        } else if (store.resource() === 'characters') {
+          patchState(store, (state) => {
+            return {
+              characters: [],
+              charactersFilter: {
+                ...state.charactersFilter,
+                query: query,
+                page: 1,
+              },
+            };
+          });
+        }
       },
+
+      loadMore(): void {
+        if (store.resource() === 'characters') {
+          patchState(store, (state) => ({
+            charactersFilter: {
+              ...state.charactersFilter,
+              page: state.charactersFilter.page + 1,
+            },
+          }));
+        }
+      },
+
       // RxJs methods
       loadBooksByQuery: rxMethod<QueryPayload>(
         pipe(
@@ -152,9 +169,16 @@ export const ListPageStore = signalStore(
                       const parsedLinks = parse(linkHeader);
                       console.log('==Parsed Link Header:', parsedLinks);
                     }
-                    patchState(store, {
-                      books: res.body || [],
-                      isLoading: false,
+                    // patchState(store, {
+                    //   books: res.body || [],
+                    //   isLoading: false,
+                    // });
+                    patchState(store, (state) => {
+                      console.log('==loadBooks state', state);
+                      return {
+                        books: res.body || [],
+                        isLoading: false,
+                      };
                     });
                   },
                   error: (err) => {
@@ -208,7 +232,6 @@ export const ListPageStore = signalStore(
           distinctUntilChanged(),
           tap(() => patchState(store, { isLoading: true })),
           switchMap((payload) => {
-            console.log('==payload', payload);
             return charactersService
               .getByQuery(payload.query, payload.page, payload.pageSize)
               .pipe(
@@ -221,9 +244,19 @@ export const ListPageStore = signalStore(
                       const parsedLinks = parse(linkHeader);
                       console.log('==Parsed Link Header:', parsedLinks);
                     }
-                    patchState(store, {
-                      characters: res.body || [],
-                      isLoading: false,
+                    // patchState(store, {
+                    //   characters: res.body || [],
+                    //   isLoading: false,
+                    // });
+                    patchState(store, (state) => {
+                      let newCharacters = [...state.characters];
+                      if (res.body) {
+                        newCharacters = newCharacters.concat(res.body);
+                      }
+                      return {
+                        characters: newCharacters,
+                        isLoading: false,
+                      };
                     });
                   },
                   error: (err) => {
