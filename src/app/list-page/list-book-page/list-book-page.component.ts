@@ -6,11 +6,13 @@ import {
   OnInit,
 } from '@angular/core';
 import { CardBookComponent } from '../../components/card-book/card-book.component';
+import { CardFillEmptyComponent } from '../../components/card-fill-empty/card-fill-empty.component';
+import { CardSkeletonComponent } from '../../components/card-skeleton/card-skeleton.component';
 import { ListPageStore } from '../list-page.store';
 
 @Component({
   selector: 'app-list-book-page',
-  imports: [CardBookComponent],
+  imports: [CardBookComponent, CardSkeletonComponent, CardFillEmptyComponent],
   templateUrl: './list-book-page.component.html',
   styleUrl: './list-book-page.component.scss',
   changeDetection: ChangeDetectionStrategy.OnPush,

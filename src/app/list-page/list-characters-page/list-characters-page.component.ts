@@ -7,12 +7,17 @@ import {
 } from '@angular/core';
 
 import { CardCharacterComponent } from '../../components/card-character/card-character.component';
+import { CardFillEmptyComponent } from '../../components/card-fill-empty/card-fill-empty.component';
 import { CardSkeletonComponent } from '../../components/card-skeleton/card-skeleton.component';
 import { ListPageStore } from '../list-page.store';
 
 @Component({
   selector: 'app-list-characters-page',
-  imports: [CardCharacterComponent, CardSkeletonComponent],
+  imports: [
+    CardCharacterComponent,
+    CardSkeletonComponent,
+    CardFillEmptyComponent,
+  ],
   templateUrl: './list-characters-page.component.html',
   styleUrl: './list-characters-page.component.scss',
   changeDetection: ChangeDetectionStrategy.OnPush,

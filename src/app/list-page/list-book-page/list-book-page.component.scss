@@ -5,6 +5,10 @@
   margin-bottom: 20px;
 }
 
+.empty {
+  display: none;
+}
+
 @media screen and (min-width: styles.$non-mobile-bp) {
   .container {
     display: flex;
@@ -15,5 +19,9 @@
 
   .card {
     margin-bottom: 0;
+  }
+
+  .empty {
+    display: block;
   }
 }

@@ -28,7 +28,7 @@ import { Book } from '../shared/models/book';
 import { Character } from '../shared/models/character';
 import { House } from '../shared/models/house';
 
-const DEFAULT_PAGE_SIZE = 10;
+const DEFAULT_PAGE_SIZE = 20;
 const DEBOUNCE_TIME = 400;
 
 type QueryPayload = {
@@ -112,12 +112,28 @@ export const ListPageStore = signalStore(
   }),
   // computed
   withComputed((store) => ({
+    bookSkeletons: computed(() => {
+      const total = store.booksFilter().pageSize + store.books().length;
+      return [...Array(total)];
+    }),
+    houseSkeletons: computed(() => {
+      const total = store.housesFilter().pageSize + store.houses().length;
+      return [...Array(total)];
+    }),
     characterSkeletons: computed(() => {
       const total =
         store.charactersFilter().pageSize + store.characters().length;
-      console.log('==total:', total);
       return [...Array(total)];
     }),
+    booksEmptySpace: computed(() => [
+      ...Array(store.booksFilter().pageSize - 1),
+    ]),
+    housesEmptySpace: computed(() => [
+      ...Array(store.housesFilter().pageSize - 1),
+    ]),
+    charactersEmptySpace: computed(() => [
+      ...Array(store.charactersFilter().pageSize - 1),
+    ]),
   })),
   // methods
   withMethods(

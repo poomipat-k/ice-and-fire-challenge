@@ -1,7 +1,15 @@
 <div class="container">
   @if (store.isLoading()) { @for (card of store.characterSkeletons(); track
   $index) {
-  <app-com-card-skeleton></app-com-card-skeleton>
+  <div class="card">
+    <app-com-card-skeleton></app-com-card-skeleton>
+  </div>
+  }
+  <!-- fill empty spaces -->
+  @for (item of store.charactersEmptySpace(); track $index) {
+  <div class="empty">
+    <app-com-card-fill-empty></app-com-card-fill-empty>
+  </div>
   } } @else { @for (character of store.characters(); track $index) {
   <div class="card">
     <app-com-card-character
@@ -10,6 +18,12 @@
       [culture]="character.culture"
       [gender]="character.gender"
     ></app-com-card-character>
+  </div>
+  }
+  <!-- fill empty spaces -->
+  @for (item of store.charactersEmptySpace(); track $index) {
+  <div class="empty">
+    <app-com-card-fill-empty></app-com-card-fill-empty>
   </div>
   } }
 </div>

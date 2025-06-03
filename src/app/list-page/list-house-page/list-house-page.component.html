@@ -1,13 +1,30 @@
 <div class="container">
-  @if (store.isLoading()) {
-  <h1>Loading ...</h1>
-  } @else { @for (house of store.houses(); track $index) {
+  @if (store.isLoading()) { @for (card of store.characterSkeletons(); track
+  $index) {
+  <div class="card">
+    <app-com-card-skeleton></app-com-card-skeleton>
+  </div>
+  }
+  <!-- fill empty spaces -->
+  @for (item of store.housesEmptySpace(); track $index) {
+  <div class="empty">
+    <app-com-card-fill-empty></app-com-card-fill-empty>
+  </div>
+  } }
+  <!-- Real data -->
+  @else { @for (house of store.houses(); track $index) {
   <div class="card">
     <app-com-card-house
       [redirectTo]="getDetailsPath(house.url)"
       [name]="house.name"
       [region]="house.region"
     ></app-com-card-house>
+  </div>
+  }
+  <!-- fill empty spaces -->
+  @for (item of store.housesEmptySpace(); track $index) {
+  <div class="empty">
+    <app-com-card-fill-empty></app-com-card-fill-empty>
   </div>
   } }
 </div>

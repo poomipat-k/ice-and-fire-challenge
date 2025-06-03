@@ -1,7 +1,16 @@
 <div class="container">
-  @if (store.isLoading()) {
-  <h1>Loading ...</h1>
-  } @else { @for (book of store.books(); track $index) {
+  @if (store.isLoading()) { @for (card of store.characterSkeletons(); track
+  $index) {
+  <div class="card">
+    <app-com-card-skeleton></app-com-card-skeleton>
+  </div>
+  }
+  <!-- fill empty spaces -->
+  @for (item of store.booksEmptySpace(); track $index) {
+  <div class="empty">
+    <app-com-card-fill-empty></app-com-card-fill-empty>
+  </div>
+  } } @else { @for (book of store.books(); track $index) {
   <div class="card">
     <app-com-card-book
       [redirectTo]="getDetailsPath(book.url)"
@@ -11,5 +20,12 @@
       [released]="book.released"
     ></app-com-card-book>
   </div>
-  } }
+  }
+
+  <!-- fill empty spaces -->
+  @for (item of store.booksEmptySpace(); track $index) {
+  <div class="empty">
+    <app-com-card-fill-empty></app-com-card-fill-empty>
+  </div>
+  }}
 </div>
