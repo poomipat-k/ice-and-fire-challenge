@@ -12,7 +12,9 @@ import { combineLatest } from 'rxjs';
 import { BooksService } from '../services/books.service';
 import { CharactersService } from '../services/characters.service';
 import { HousesService } from '../services/houses.service';
+import { Book } from '../shared/models/book';
 import { Character } from '../shared/models/character';
+import { House } from '../shared/models/house';
 
 const LOCAL_STORAGE_FAV = 'favorites';
 
@@ -25,6 +27,8 @@ type FavoritesState = {
   books: number[]; // ids
   houses: number[]; // ids
   characters: number[]; // ids
+  booksData: Book[];
+  housesData: House[];
   charactersData: Character[];
 };
 
@@ -41,6 +45,8 @@ const initialState: FavoritesState = {
   books: [],
   houses: [],
   characters: [],
+  booksData: [],
+  housesData: [],
   charactersData: [],
 };
 
@@ -100,21 +106,47 @@ export const FavoritesStore = signalStore(
         return split[split.length - 1];
       },
 
+      getFavoritesBooks() {
+        const requests = store.books().map((id) => booksService.getById(id));
+        return combineLatest(requests).pipe(
+          tapResponse({
+            next: (data) => {
+              patchState(store, { booksData: data, isLoading: false });
+            },
+            error: (err) => {
+              patchState(store, { isLoading: false });
+              console.error(err);
+            },
+            finalize: () => patchState(store, { isLoading: false }),
+          })
+        );
+      },
+
+      getFavoritesHouses() {
+        const requests = store.houses().map((id) => housesService.getById(id));
+
+        return combineLatest(requests).pipe(
+          tapResponse({
+            next: (data) => {
+              patchState(store, { housesData: data, isLoading: false });
+            },
+            error: (err) => {
+              patchState(store, { isLoading: false });
+              console.error(err);
+            },
+            finalize: () => patchState(store, { isLoading: false }),
+          })
+        );
+      },
+
       getFavoritesCharacters() {
         const requests = store
           .characters()
           .map((id) => charactersService.getById(id));
-
         return combineLatest(requests).pipe(
           tapResponse({
-            next: (res) => {
-              console.log('==res'), res;
-              patchState(store, (state) => {
-                return {
-                  charactersData: res,
-                  isLoading: false,
-                };
-              });
+            next: (data) => {
+              patchState(store, { charactersData: data, isLoading: false });
             },
             error: (err) => {
               patchState(store, { isLoading: false });
@@ -153,12 +185,22 @@ export const FavoritesStore = signalStore(
           if (resource === 'books') {
             return {
               books: [...state.books].filter((id) => id !== resourceId),
+              booksData: [...state.booksData].filter((book) => {
+                const sp = book.url.split('/books/');
+                const id = +sp[sp.length - 1];
+                return id !== resourceId;
+              }),
             };
           } else if (resource === 'houses') {
             return {
               houses: [...state.houses, resourceId].filter(
                 (id) => id !== resourceId
               ),
+              housesData: [...state.housesData].filter((house) => {
+                const sp = house.url.split('/houses/');
+                const id = +sp[sp.length - 1];
+                return id !== resourceId;
+              }),
             };
           } else if (resource === 'characters') {
             return {

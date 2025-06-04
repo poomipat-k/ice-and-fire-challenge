@@ -1,0 +1,42 @@
+@use "../../styles.scss";
+
+.layout {
+  padding: 18px;
+}
+
+.header {
+  font-size: 700;
+  font-size: 30px;
+  margin-bottom: 16px;
+  text-align: center;
+}
+
+.card {
+  display: block;
+  margin-bottom: 20px;
+}
+
+.empty {
+  display: none;
+}
+
+@media screen and (min-width: styles.$non-mobile-bp) {
+  .container {
+    display: flex;
+    flex-flow: row wrap;
+    gap: 24px;
+    justify-content: center;
+  }
+
+  .card {
+    margin-bottom: 0;
+  }
+
+  .empty {
+    display: block;
+  }
+
+  .header {
+    font-size: 36px;
+  }
+}
