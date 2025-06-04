@@ -1,76 +1,192 @@
 <div class="container">
+  <h1 class="header">{{ store.house.name() || "-" }}</h1>
+
   <div class="row">
-    <p class="row__label">name:</p>
-    <p>{{ store.house.name() }}</p>
+    <p class="row__label">Region:</p>
+    <p class="row__value">{{ store.house.region() || "-" }}</p>
   </div>
 
   <div class="row">
-    <p class="row__label">region:</p>
-    <p>{{ store.house.region() }}</p>
+    <p class="row__label">Coat of Arms:</p>
+    <p class="row__value">{{ store.house.coatOfArms() || "-" }}</p>
   </div>
 
   <div class="row">
-    <p class="row__label">Coat Of Arms:</p>
-    <p>{{ store.house.coatOfArms() }}</p>
-  </div>
-
-  <div class="row">
-    <p class="row__label">words:</p>
-    <p>{{ store.house.words() }}</p>
+    <p class="row__label">Words:</p>
+    <p class="row__value">{{ store.house.words() || "-" }}</p>
   </div>
 
   <div class="row">
     <p class="row__label">Titles:</p>
-    <p>{{ store.house.titles() }}</p>
+    <div class="list">
+      @if (store.house.titles().length) { @for (title of store.house.titles();
+      track $index) {
+      <p class="row__value">{{ `- ${title}` }}</p>
+      } }@else {
+      <p class="row__value">-</p>
+      }
+    </div>
   </div>
 
   <div class="row">
     <p class="row__label">Seats:</p>
-    <p>{{ store.house.seats() }}</p>
+    <div class="list">
+      @if (store.house.seats().length) { @for (seat of store.house.seats();
+      track $index) {
+      <p class="row__value">{{ `${seat}` }}</p>
+      } }@else {
+      <p class="row__value">-</p>
+      }
+    </div>
   </div>
 
   <div class="row">
     <p class="row__label">Current Lord:</p>
-    <p>{{ store.house.currentLord() }}</p>
+    @if (store.house.currentLord()) {
+    <div class="link__container">
+      <a
+        class="link__item"
+        [routerLink]="`/${store.trimBaseUrl(store.house.currentLord())}`"
+        target="_blank"
+        >{{ `${store.trimBaseUrl(store.house.currentLord())} ` }}</a
+      >
+      <div class="link__icon">
+        <app-com-svg-external-link></app-com-svg-external-link>
+      </div>
+    </div>
+    } @else {
+    <p class="row__value">-</p>
+    }
   </div>
 
   <div class="row">
-    <p class="row__label">heir:</p>
-    <p>{{ store.house.heir() }}</p>
+    <p class="row__label">Heir:</p>
+    @if (store.house.heir()) {
+    <div class="link__container">
+      <a
+        class="link__item"
+        [routerLink]="`/${store.trimBaseUrl(store.house.heir())}`"
+        target="_blank"
+        >{{ `${store.trimBaseUrl(store.house.heir())} ` }}</a
+      >
+      <div class="link__icon">
+        <app-com-svg-external-link></app-com-svg-external-link>
+      </div>
+    </div>
+    } @else {
+    <p class="row__value">-</p>
+    }
   </div>
 
   <div class="row">
-    <p class="row__label">overlord:</p>
-    <p>{{ store.house.overlord() }}</p>
+    <p class="row__label">Overlord:</p>
+    @if (store.house.overlord()) {
+    <div class="link__container">
+      <a
+        class="link__item"
+        [routerLink]="`/${store.trimBaseUrl(store.house.overlord())}`"
+        target="_blank"
+        >{{ `${store.trimBaseUrl(store.house.overlord())} ` }}</a
+      >
+      <div class="link__icon">
+        <app-com-svg-external-link></app-com-svg-external-link>
+      </div>
+    </div>
+    } @else {
+    <p class="row__value">-</p>
+    }
   </div>
 
   <div class="row">
-    <p class="row__label">founded:</p>
-    <p>{{ store.house.founded() }}</p>
+    <p class="row__label">Founded:</p>
+    <p class="row__value">{{ store.house.founded() || "-" }}</p>
   </div>
 
   <div class="row">
-    <p class="row__label">founder:</p>
-    <p>{{ store.house.founder() }}</p>
+    <p class="row__label">Founder:</p>
+
+    @if (store.house.founder()) {
+    <div class="link__container">
+      <a
+        class="link__item"
+        [routerLink]="`/${store.trimBaseUrl(store.house.founder())}`"
+        target="_blank"
+        >{{ `${store.trimBaseUrl(store.house.founder())} ` }}</a
+      >
+      <div class="link__icon">
+        <app-com-svg-external-link></app-com-svg-external-link>
+      </div>
+    </div>
+    } @else {
+    <p class="row__value">-</p>
+    }
   </div>
 
   <div class="row">
-    <p class="row__label">diedOut:</p>
-    <p>{{ store.house.diedOut() }}</p>
+    <p class="row__label">DiedOut:</p>
+    <p class="row__value">{{ store.house.diedOut() || "-" }}</p>
   </div>
 
   <div class="row">
-    <p class="row__label">ancestralWeapons:</p>
-    <p>{{ store.house.ancestralWeapons() }}</p>
+    <p class="row__label">AncestralWeapons:</p>
+    <div class="list">
+      @if (store.house.ancestralWeapons().length) { @for (weapon of
+      store.house.ancestralWeapons(); track $index) {
+      <p class="row__value">{{ `- ${weapon}` }}</p>
+      } }@else {
+      <p class="row__value">-</p>
+      }
+    </div>
   </div>
 
   <div class="row">
-    <p class="row__label">cadetBranches:</p>
-    <p>{{ store.house.cadetBranches() }}</p>
+    <p class="row__label">Total sworn members:</p>
+    <p class="row__value">
+      {{ `${store.house.swornMembers().length.toLocaleString()} members` || '0 members' }}
+    </p>
   </div>
 
   <div class="row">
-    <p class="row__label">swornMembers:</p>
-    <p>{{ store.house.swornMembers() }}</p>
+    <p class="row__label">CadetBranches:</p>
+    <div class="list">
+      @if (store.house.cadetBranches().length) { @for (branch of
+      store.house.cadetBranches(); track $index) {
+      <div class="link__container">
+        <a
+          class="link__item"
+          [routerLink]="`/${store.trimBaseUrl(branch)}`"
+          target="_blank"
+          >{{ `${store.trimBaseUrl(branch)} ` }}</a
+        >
+        <div class="link__icon">
+          <app-com-svg-external-link></app-com-svg-external-link>
+        </div>
+      </div>
+      } }@else {
+      <p class="row__value">-</p>
+      }
+    </div>
+  </div>
+
+  <div class="row">
+    <p class="row__label">SwornMembers:</p>
+    <div class="list">
+      @if (store.house.swornMembers().length) { @for (member of
+      store.house.swornMembers(); track $index) {
+      <div class="link__container">
+        <a
+          class="link__item"
+          [routerLink]="`/${store.trimBaseUrl(member)}`"
+          target="_blank"
+          >{{ `${store.trimBaseUrl(member)} ` }}</a
+        >
+        <div class="link__icon">
+          <app-com-svg-external-link></app-com-svg-external-link>
+        </div>
+      </div>
+      } }@else {
+      <p class="row__value">-</p>
+      }
+    </div>
   </div>
 </div>

@@ -1,23 +1,38 @@
 .card {
-  min-width: 328px;
-  max-width: 600px;
-  padding: 16px;
-  padding-bottom: 40px;
+  width: 328px;
+  padding: 20px;
   min-height: 200px;
   border-radius: 16px;
   position: relative;
+  cursor: pointer;
 
   box-shadow: 0px 0px 12px 0px #00000026;
 
+  &__data {
+    display: flex;
+    flex-direction: column;
+    gap: 6px;
+  }
+
   &__row {
     display: flex;
+    justify-content: space-between;
     gap: 20px;
   }
 
-  &__link {
-    position: absolute;
-    bottom: 8px;
-    right: 8px;
-    cursor: pointer;
+  &__label {
+    font-size: 18px;
+  }
+
+  &__value {
+    font-size: 18px;
+  }
+
+  &__header {
+    font-weight: 600;
+    font-size: 24px;
+    text-align: center;
+    margin-bottom: 16px;
+    min-height: 56px;
   }
 }

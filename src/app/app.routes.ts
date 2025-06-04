@@ -24,22 +24,22 @@ export const routes: Routes = [
   {
     path: 'list',
     component: ListPageComponent,
-    title: 'List page',
+    title: 'List ',
     children: [
       {
         path: 'books',
         component: ListBookPageComponent,
-        title: 'Books - Ice and Fire books',
+        title: 'Books - Ice and Fire',
       },
       {
         path: 'houses',
         component: ListHousePageComponent,
-        title: 'Houses - Ice and Fire houses',
+        title: 'Houses - Ice and Fire',
       },
       {
         path: 'characters',
         component: ListCharactersPageComponent,
-        title: 'Characters - Ice and Fire characters',
+        title: 'Characters - Ice and Fire',
       },
     ],
   },

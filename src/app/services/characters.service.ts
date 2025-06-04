@@ -1,6 +1,6 @@
 import { HttpClient } from '@angular/common/http';
 import { inject, Injectable } from '@angular/core';
-import { catchError, Observable } from 'rxjs';
+import { catchError } from 'rxjs';
 import { environment } from '../../environments/environment';
 import { QueryResource } from '../shared/interfaces/query-resource';
 import { Character } from '../shared/models/character';
@@ -15,14 +15,11 @@ export class CharactersService implements QueryResource {
 
   constructor() {}
 
-  getByQuery(
-    query: string,
-    page: number,
-    pageSize: number
-  ): Observable<Character[]> {
+  getByQuery(query: string, page: number, pageSize: number) {
     return this.http
       .get<Character[]>(
-        `${this.baseApiUrl}/characters?name=${query}&page=${page}&pageSize=${pageSize}`
+        `${this.baseApiUrl}/characters?name=${query}&page=${page}&pageSize=${pageSize}`,
+        { observe: 'response' }
       )
       .pipe(catchError(handleError));
   }

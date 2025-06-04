@@ -5,15 +5,16 @@ import {
   Injector,
   OnInit,
 } from '@angular/core';
+import { CardFillEmptyComponent } from '../../components/card-fill-empty/card-fill-empty.component';
 import { CardHouseComponent } from '../../components/card-house/card-house.component';
+import { CardSkeletonComponent } from '../../components/card-skeleton/card-skeleton.component';
 import { ListPageStore } from '../list-page.store';
 
 @Component({
   selector: 'app-list-house-page',
-  imports: [CardHouseComponent],
+  imports: [CardHouseComponent, CardSkeletonComponent, CardFillEmptyComponent],
   templateUrl: './list-house-page.component.html',
   styleUrl: './list-house-page.component.scss',
-  providers: [ListPageStore],
   changeDetection: ChangeDetectionStrategy.OnPush,
 })
 export class ListHousePageComponent implements OnInit {
@@ -21,8 +22,9 @@ export class ListHousePageComponent implements OnInit {
   readonly #injector = inject(Injector);
 
   ngOnInit(): void {
-    const query = this.store.query;
-    this.store.loadHousesByQuery(query, { injector: this.#injector });
+    this.store.loadHousesByQuery(this.store.housesFilter, {
+      injector: this.#injector,
+    });
   }
 
   getDetailsPath(url: string): string {

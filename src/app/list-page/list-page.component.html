@@ -1,16 +1,24 @@
 <section class="layout">
+  <h1 class="header">{{ store.resource() | titlecase }}</h1>
   <p>Search bar</p>
   <input
     type="input"
     autocomplete="on"
     style="padding: 4px; font-size: 20px"
-    [formControl]="searchText"
+    [formControl]="store.queryForm()"
   />
   <p>filter</p>
   <br />
-  <p>Subroute below:</p>
 
   <div class="container">
     <router-outlet />
+  </div>
+
+  <div class="loadMore">
+    @if (!store.isLoading() && store.hasNextPage()) {
+    <button class="loadMore__button" (click)="store.loadMore()">
+      Load more {{ store.resource() }}
+    </button>
+    }
   </div>
 </section>

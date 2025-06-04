@@ -1,4 +1,4 @@
-import { HttpClient } from '@angular/common/http';
+import { HttpClient, HttpResponse } from '@angular/common/http';
 import { inject, Injectable } from '@angular/core';
 import { catchError, Observable } from 'rxjs';
 import { environment } from '../../environments/environment';
@@ -19,10 +19,11 @@ export class HousesService implements QueryResource {
     query: string,
     page: number,
     pageSize: number
-  ): Observable<House[]> {
+  ): Observable<HttpResponse<House[]>> {
     return this.http
       .get<House[]>(
-        `${this.baseApiUrl}/houses?name=${query}&page=${page}&pageSize=${pageSize}`
+        `${this.baseApiUrl}/houses?name=${query}&page=${page}&pageSize=${pageSize}`,
+        { observe: 'response' }
       )
       .pipe(catchError(handleError));
   }

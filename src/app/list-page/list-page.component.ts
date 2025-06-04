@@ -1,3 +1,4 @@
+import { TitleCasePipe } from '@angular/common';
 import {
   ChangeDetectionStrategy,
   Component,
@@ -5,14 +6,14 @@ import {
   OnDestroy,
   OnInit,
 } from '@angular/core';
-import { FormControl, ReactiveFormsModule } from '@angular/forms';
+import { ReactiveFormsModule } from '@angular/forms';
 import { RouterOutlet } from '@angular/router';
 import { Subscription } from 'rxjs';
 import { ListPageStore } from './list-page.store';
 
 @Component({
   selector: 'app-list-page',
-  imports: [RouterOutlet, ReactiveFormsModule],
+  imports: [RouterOutlet, ReactiveFormsModule, TitleCasePipe],
   templateUrl: './list-page.component.html',
   styleUrl: './list-page.component.scss',
   providers: [ListPageStore],
@@ -21,16 +22,15 @@ import { ListPageStore } from './list-page.store';
 export class ListPageComponent implements OnInit, OnDestroy {
   readonly store = inject(ListPageStore);
 
-  readonly searchText = new FormControl<string>('');
   private readonly subs: Subscription[] = [];
 
   ngOnInit(): void {
-    this.store.updateQuery('');
-    this.store.changeResource('houses');
+    const querySub = this.store
+      .queryForm()
+      ?.valueChanges?.subscribe((query) => {
+        this.store.updateQuery(query ?? '');
+      });
 
-    const querySub = this.searchText?.valueChanges?.subscribe((query) => {
-      this.store.updateQuery(query || '');
-    });
     this.subs.push(querySub);
   }
 

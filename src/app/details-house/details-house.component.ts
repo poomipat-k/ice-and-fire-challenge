@@ -5,11 +5,13 @@ import {
   input,
   OnInit,
 } from '@angular/core';
+import { RouterLink } from '@angular/router';
+import { ExternalLinkComponent } from '../components/svg/external-link/external-link.component';
 import { HouseDetailsStore } from './house-details.store';
 
 @Component({
   selector: 'app-details-house',
-  imports: [],
+  imports: [RouterLink, ExternalLinkComponent],
   templateUrl: './details-house.component.html',
   styleUrl: './details-house.component.scss',
   providers: [HouseDetailsStore],

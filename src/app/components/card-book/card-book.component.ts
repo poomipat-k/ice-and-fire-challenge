@@ -13,25 +13,37 @@ export class CardBookComponent {
   name = input.required<string>();
   authors = input.required<string[]>();
   numberOfPages = input.required<number>();
-  released = input.required<string | Date>();
+  released = input.required<string>();
+  isbn = input.required<string>();
 
   bookAttributes = computed<BasicCardData>(() => {
+    const released = new Date(this.released());
+    let releasedStr = '';
+    if (!released.getDate()) {
+      releasedStr = '-';
+    } else {
+      releasedStr = released.toLocaleDateString('en-UK', {
+        year: 'numeric',
+        month: 'long',
+        day: '2-digit',
+      });
+    }
     return [
       {
-        key: 'name',
-        val: this.name(),
-      },
-      {
-        key: 'authors',
+        key: 'Authors',
         val: this.authors(),
       },
       {
-        key: 'number of pages',
-        val: this.numberOfPages(),
+        key: 'Released',
+        val: releasedStr,
       },
       {
-        key: 'releasedDate',
-        val: this.released(),
+        key: 'Number of pages',
+        val: this.numberOfPages().toLocaleString(),
+      },
+      {
+        key: 'ISBN',
+        val: this.isbn(),
       },
     ];
   });

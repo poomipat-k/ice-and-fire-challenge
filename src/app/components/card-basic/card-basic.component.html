@@ -1,15 +1,20 @@
-<div class="card">
+<div class="card" [routerLink]="redirectTo()">
   <div>
-    @for (field of card(); track $index) {
-    <div class="card__row">
-      <p>{{ field.key }}</p>
-      <p>{{ field.val }}</p>
+    <h3 class="card__header">{{ header() }}</h3>
+    <div class="card__data">
+      @for (field of card(); track $index) {
+      <div class="card__row">
+        <p
+          class="card__label"
+          [style]="{ fontSize: fontSize(), minWidth: labelMinWidth() }"
+        >
+          {{ field.key }}
+        </p>
+        <p class="card__value" [style]="{ fontSize: fontSize() }">
+          {{ field.val }}
+        </p>
+      </div>
+      }
     </div>
-    }
-  </div>
-  <div class="card__link">
-    @if (redirectTo()?.length) {
-    <a [routerLink]="redirectTo()">More details</a>
-    }
   </div>
 </div>

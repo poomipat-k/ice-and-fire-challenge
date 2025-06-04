@@ -2,10 +2,41 @@
   padding: 18px;
 }
 
+.header {
+  font-size: 36px;
+  text-align: center;
+}
+
 .container {
   display: flex;
   flex-flow: row wrap;
   gap: 20px;
 
   justify-content: center;
+}
+
+.loadMore {
+  text-align: center;
+  margin-top: 50px;
+
+  &__button {
+    padding: 16px 24px;
+    font-size: 20px;
+    line-height: 100%;
+    text-align: center;
+    border-radius: 8px;
+    outline: none;
+    border: none;
+    cursor: pointer;
+    background-color: #feb273;
+    color: #000;
+
+    &:hover {
+      background-color: #ffbe88;
+    }
+
+    &:active {
+      background-color: #ffa167;
+    }
+  }
 }

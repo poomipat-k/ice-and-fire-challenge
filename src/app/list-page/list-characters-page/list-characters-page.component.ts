@@ -5,15 +5,21 @@ import {
   Injector,
   OnInit,
 } from '@angular/core';
+
 import { CardCharacterComponent } from '../../components/card-character/card-character.component';
+import { CardFillEmptyComponent } from '../../components/card-fill-empty/card-fill-empty.component';
+import { CardSkeletonComponent } from '../../components/card-skeleton/card-skeleton.component';
 import { ListPageStore } from '../list-page.store';
 
 @Component({
   selector: 'app-list-characters-page',
-  imports: [CardCharacterComponent],
+  imports: [
+    CardCharacterComponent,
+    CardSkeletonComponent,
+    CardFillEmptyComponent,
+  ],
   templateUrl: './list-characters-page.component.html',
   styleUrl: './list-characters-page.component.scss',
-  providers: [ListPageStore],
   changeDetection: ChangeDetectionStrategy.OnPush,
 })
 export class ListCharactersPageComponent implements OnInit {
@@ -21,9 +27,7 @@ export class ListCharactersPageComponent implements OnInit {
   readonly #injector = inject(Injector);
 
   ngOnInit(): void {
-    this.store.updateQuery('');
-    this.store.changeResource('characters');
-    this.store.loadCharactersByQuery(this.store.query, {
+    this.store.loadCharactersByQuery(this.store.charactersFilter, {
       injector: this.#injector,
     });
   }

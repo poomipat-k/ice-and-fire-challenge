@@ -8,7 +8,12 @@
       (click)="store.toggleFavorites()"
     >
       <div>Favorites</div>
-      <div class="navbar__group-arrow">
+      <div
+        [ngClass]="{
+          'navbar__group-arrow': true,
+          'navbar__group-arrow--active': store.showFavorites()
+        }"
+      >
         <app-com-svg-arrow-down></app-com-svg-arrow-down>
       </div>
 
@@ -43,7 +48,12 @@
       (click)="store.toggleList()"
     >
       <div>Lists</div>
-      <div class="navbar__group-arrow">
+      <div
+        [ngClass]="{
+          'navbar__group-arrow': true,
+          'navbar__group-arrow--active': store.showList()
+        }"
+      >
         <app-com-svg-arrow-down></app-com-svg-arrow-down>
       </div>
 
@@ -53,9 +63,22 @@
           'navbar__menu--display': store.showList()
         }"
       >
-        <a class="navbar__menu-link" routerLink="/list/books">Books</a>
-        <a class="navbar__menu-link" routerLink="/list/houses">Houses</a>
-        <a class="navbar__menu-link" routerLink="/list/characters"
+        <a
+          class="navbar__menu-link"
+          routerLink="/list/books"
+          routerLinkActive="active"
+          >Books</a
+        >
+        <a
+          class="navbar__menu-link"
+          routerLink="/list/houses"
+          routerLinkActive="active"
+          >Houses</a
+        >
+        <a
+          class="navbar__menu-link"
+          routerLink="/list/characters"
+          routerLinkActive="active"
           >Characters</a
         >
       </div>

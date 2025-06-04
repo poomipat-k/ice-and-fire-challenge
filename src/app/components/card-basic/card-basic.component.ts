@@ -10,5 +10,8 @@ import { BasicCardData } from '../../shared/models/basic-card-data';
 })
 export class CardBasicComponent {
   readonly card = input<BasicCardData>();
+  readonly header = input<string>();
   readonly redirectTo = input<string>(); // eg. "/books/10"
+  readonly fontSize = input<string>('18px');
+  readonly labelMinWidth = input<string>('0');
 }

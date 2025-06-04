@@ -1,53 +1,38 @@
 <div class="container">
+  <h1 class="header">{{ store.book.name() }}</h1>
+
   <div class="row">
-    <p class="row__label">name:</p>
-    <p>{{ store.book.name() }}</p>
+    <p class="row__label">Authors:</p>
+    <p class="row__value">{{ store.book.authors().join(", ") }}</p>
   </div>
 
   <div class="row">
-    <p class="row__label">isbn:</p>
-    <p>{{ store.book.isbn() }}</p>
-  </div>
-
-  <div class="row">
-    <p class="row__label">authors:</p>
-    @for (author of store.book.authors(); track $index) {
-    <p>{{ author }}</p>
-    }
+    <p class="row__label">ISBN:</p>
+    <p class="row__value">{{ store.book.isbn() }}</p>
   </div>
 
   <div class="row">
     <p class="row__label">Number Of Pages:</p>
-    <p>{{ store.book.numberOfPages() }}</p>
+    <p class="row__value">{{ store.book.numberOfPages().toLocaleString() }}</p>
   </div>
 
   <div class="row">
-    <p class="row__label">publisher:</p>
-    <p>{{ store.book.publisher() }}</p>
+    <p class="row__label">Publisher:</p>
+    <p class="row__value">{{ store.book.publisher() }}</p>
   </div>
 
   <div class="row">
     <p class="row__label">Country:</p>
-    <p>{{ store.book.country() }}</p>
+    <p class="row__value">{{ store.book.country() }}</p>
   </div>
 
   <div class="row">
     <p class="row__label">Media Type:</p>
-    <p>{{ store.book.mediaType() }}</p>
+    <p class="row__value">{{ store.book.mediaType() }}</p>
   </div>
 
   <div class="row">
-    <p class="row__label">released:</p>
-    <p>{{ store.book.released() }}</p>
-  </div>
-
-  <!-- <div class="row">
-    <p>characters:</p>
-    <p>{{ store.book.characters() }}</p>
-  </div> -->
-
-  <div class="row">
-    <p class="row__label">POV Characters:</p>
-    <p>{{ store.book.povCharacters() }}</p>
+    <p class="row__label">Released:</p>
+    <p class="row__value">{{ store.transformDate(store.book.released()) }}</p>
   </div>
 </div>

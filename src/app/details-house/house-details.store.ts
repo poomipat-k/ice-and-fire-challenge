@@ -1,8 +1,9 @@
 import { inject } from '@angular/core';
+import { Title } from '@angular/platform-browser';
 import { tapResponse } from '@ngrx/operators';
 import { patchState, signalStore, withMethods, withState } from '@ngrx/signals';
 import { rxMethod } from '@ngrx/signals/rxjs-interop';
-import { debounceTime, distinctUntilChanged, pipe, switchMap, tap } from 'rxjs';
+import { pipe, switchMap, tap } from 'rxjs';
 import { HousesService } from '../services/houses.service';
 import { House } from '../shared/models/house';
 
@@ -36,31 +37,43 @@ const initialState: HouseDetailsState = {
 export const HouseDetailsStore = signalStore(
   // state
   withState(initialState),
-  withMethods((store, housesService = inject(HousesService)) => ({
-    loadById: rxMethod<number>(
-      pipe(
-        debounceTime(300),
-        distinctUntilChanged(),
-        tap(() => patchState(store, { isLoading: true })),
-        switchMap((id) => {
-          return housesService.getById(id).pipe(
-            tapResponse({
-              next: (house) => {
-                console.log('===house: ', house);
-                patchState(store, {
-                  house: house,
-                  isLoading: false,
-                });
-              },
-              error: (err) => {
-                patchState(store, { isLoading: false });
-                console.error(err);
-              },
-              finalize: () => patchState(store, { isLoading: false }),
-            })
-          );
-        })
-      )
-    ),
-  }))
+  withMethods(
+    (
+      store,
+      housesService = inject(HousesService),
+      titleService = inject(Title)
+    ) => ({
+      trimBaseUrl(url: string): string {
+        const split = url.split('anapioficeandfire.com/api/');
+        if (split.length < 2) {
+          return '';
+        }
+        return split[split.length - 1];
+      },
+      loadById: rxMethod<number>(
+        pipe(
+          tap(() => patchState(store, { isLoading: true })),
+          switchMap((id) => {
+            return housesService.getById(id).pipe(
+              tapResponse({
+                next: (house) => {
+                  console.log('===house: ', house);
+                  titleService.setTitle(`House - ${house.name}`);
+                  patchState(store, {
+                    house: house,
+                    isLoading: false,
+                  });
+                },
+                error: (err) => {
+                  patchState(store, { isLoading: false });
+                  console.error(err);
+                },
+                finalize: () => patchState(store, { isLoading: false }),
+              })
+            );
+          })
+        )
+      ),
+    })
+  )
 );

@@ -13,20 +13,31 @@ export class CardCharacterComponent {
   name = input.required<string>();
   culture = input.required<string>();
   gender = input.required<string>();
+  aliases = input.required<string[]>();
+
+  header = computed(() => {
+    if (this.aliases().length) {
+      return this.aliases()[0];
+    }
+    if (this.name()) {
+      return this.name();
+    }
+    return '-';
+  });
 
   characterAttributes = computed<BasicCardData>(() => {
     return [
       {
-        key: 'name',
-        val: this.name(),
+        key: 'Name',
+        val: this.name() || '-',
       },
       {
-        key: 'culture',
-        val: this.culture(),
+        key: 'Culture',
+        val: this.culture() || '-',
       },
       {
-        key: 'gender',
-        val: this.gender(),
+        key: 'Gender',
+        val: this.gender() || '-',
       },
     ];
   });

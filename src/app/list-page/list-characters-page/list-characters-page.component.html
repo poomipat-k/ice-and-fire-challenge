@@ -1,4 +1,17 @@
 <div class="container">
+  @if (store.isLoading()) { @for (card of store.characterSkeletons(); track
+  $index) {
+  <div class="card">
+    <app-com-card-skeleton></app-com-card-skeleton>
+  </div>
+  }
+  <!-- fill empty spaces -->
+  @for (item of store.emptySpace(); track $index) {
+  <div class="empty">
+    <app-com-card-fill-empty></app-com-card-fill-empty>
+  </div>
+  } } @else {
+  <!-- Real data -->
   @for (character of store.characters(); track $index) {
   <div class="card">
     <app-com-card-character
@@ -6,7 +19,14 @@
       [name]="character.name"
       [culture]="character.culture"
       [gender]="character.gender"
+      [aliases]="character.aliases"
     ></app-com-card-character>
   </div>
   }
+  <!-- fill empty spaces -->
+  @for (item of store.emptySpace(); track $index) {
+  <div class="empty">
+    <app-com-card-fill-empty></app-com-card-fill-empty>
+  </div>
+  } }
 </div>
