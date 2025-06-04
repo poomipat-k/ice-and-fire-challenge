@@ -19,6 +19,7 @@
       </div>
     </div>
 
+    @if (!disableFavorite()) {
     <div class="fav" (click)="onFavClick($event)">
       <app-com-svg-star
         [checked]="
@@ -26,5 +27,6 @@
         "
       ></app-com-svg-star>
     </div>
+    }
   </div>
 </a>

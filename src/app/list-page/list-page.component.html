@@ -1,12 +1,12 @@
 <section class="layout">
   <h1 class="header">{{ store.resource() | titlecase }}</h1>
-  <p>Search bar</p>
-  <input
-    type="input"
-    autocomplete="on"
-    style="padding: 4px; font-size: 20px"
-    [formControl]="store.queryForm()"
-  />
+
+  <div class="search">
+    <app-com-input-text
+      [control]="store.queryForm()"
+      fontSize="20px"
+    ></app-com-input-text>
+  </div>
 
   <div class="container">
     <router-outlet />

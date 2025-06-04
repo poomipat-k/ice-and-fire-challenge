@@ -9,11 +9,17 @@ import {
 import { ReactiveFormsModule } from '@angular/forms';
 import { RouterOutlet } from '@angular/router';
 import { Subscription } from 'rxjs';
+import { InputTextComponent } from '../components/input-text/input-text.component';
 import { ListPageStore } from './list-page.store';
 
 @Component({
   selector: 'app-list-page',
-  imports: [RouterOutlet, ReactiveFormsModule, TitleCasePipe],
+  imports: [
+    RouterOutlet,
+    ReactiveFormsModule,
+    TitleCasePipe,
+    InputTextComponent,
+  ],
   templateUrl: './list-page.component.html',
   styleUrl: './list-page.component.scss',
   providers: [ListPageStore],

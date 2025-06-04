@@ -18,6 +18,7 @@ export class CardBasicComponent {
   readonly redirectTo = input<string>(); // eg. "/books/10"
   readonly fontSize = input<string>('18px');
   readonly labelMinWidth = input<string>('0');
+  readonly disableFavorite = input<boolean>(false);
 
   readonly metaData = computed(() => {
     if (!this.redirectTo()) {

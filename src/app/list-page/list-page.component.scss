@@ -1,3 +1,5 @@
+@use "../../styles.scss";
+
 .layout {
   padding: 18px;
 }
@@ -13,6 +15,12 @@
   gap: 20px;
 
   justify-content: center;
+}
+
+.search {
+  text-align: center;
+  width: 320px;
+  margin: 20px auto;
 }
 
 .loadMore {
@@ -38,5 +46,12 @@
     &:active {
       background-color: #ffa167;
     }
+  }
+}
+
+@media screen and (min-width: styles.$non-mobile-bp) {
+  .search {
+    text-align: center;
+    width: 480px;
   }
 }
