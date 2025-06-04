@@ -15,15 +15,15 @@
 .fav {
   cursor: pointer;
   position: absolute;
-  top: 12px;
-  right: 12px;
-  width: 60px;
-  height: 60px;
+  top: 4px;
+  right: 4px;
+  width: 36px;
+  height: 36px;
 }
 
 .header {
   font-size: 700;
-  font-size: 36px;
+  font-size: 28px;
   margin-bottom: 16px;
   text-align: center;
 }
@@ -65,5 +65,18 @@
       font-weight: 400;
       font-size: 24px;
     }
+  }
+
+  .header {
+    font-size: 36px;
+  }
+
+  .fav {
+    cursor: pointer;
+    position: absolute;
+    top: 12px;
+    right: 12px;
+    width: 60px;
+    height: 60px;
   }
 }

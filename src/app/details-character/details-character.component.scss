@@ -17,10 +17,10 @@ $active-color: #feb273;
 .fav {
   cursor: pointer;
   position: absolute;
-  top: 12px;
-  right: 12px;
-  width: 60px;
-  height: 60px;
+  top: 4px;
+  right: 4px;
+  width: 36px;
+  height: 36px;
 }
 
 .header {
@@ -101,5 +101,18 @@ $active-color: #feb273;
       font-weight: 400;
       font-size: 21px;
     }
+  }
+
+  .header {
+    font-size: 36px;
+  }
+
+  .fav {
+    cursor: pointer;
+    position: absolute;
+    top: 12px;
+    right: 12px;
+    width: 60px;
+    height: 60px;
   }
 }
