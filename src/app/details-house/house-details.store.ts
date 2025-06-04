@@ -57,7 +57,6 @@ export const HouseDetailsStore = signalStore(
             return housesService.getById(id).pipe(
               tapResponse({
                 next: (house) => {
-                  console.log('===house: ', house);
                   titleService.setTitle(`House - ${house.name}`);
                   patchState(store, {
                     house: house,

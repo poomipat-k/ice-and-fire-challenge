@@ -268,7 +268,6 @@ export const FavoritesStore = signalStore(
           characters: state.characters,
         };
         localStorage.setItem(LOCAL_STORAGE_FAV, JSON.stringify(favLocal));
-        console.log('==updated state', state);
       });
     },
   })
