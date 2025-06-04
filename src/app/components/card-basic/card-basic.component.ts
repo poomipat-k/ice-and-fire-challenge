@@ -1,6 +1,6 @@
 import { Component, computed, inject, input } from '@angular/core';
 import { RouterLink } from '@angular/router';
-import { FavoritesStore } from '../../favorites/favorites.store';
+import { FavoritesStore } from '../../global-states/favorites.store';
 import { BasicCardData } from '../../shared/models/basic-card-data';
 import { StarComponent } from '../svg/star/star.component';
 

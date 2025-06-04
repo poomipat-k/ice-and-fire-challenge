@@ -6,7 +6,7 @@ import {
   OnInit,
 } from '@angular/core';
 import { StarComponent } from '../components/svg/star/star.component';
-import { FavoritesStore } from '../favorites/favorites.store';
+import { FavoritesStore } from '../global-states/favorites.store';
 import { BookDetailsStore } from './book-details.store';
 
 @Component({

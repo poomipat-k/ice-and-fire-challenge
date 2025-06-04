@@ -8,7 +8,7 @@ import {
 import { RouterLink } from '@angular/router';
 import { ExternalLinkComponent } from '../components/svg/external-link/external-link.component';
 import { StarComponent } from '../components/svg/star/star.component';
-import { FavoritesStore } from '../favorites/favorites.store';
+import { FavoritesStore } from '../global-states/favorites.store';
 import { HouseDetailsStore } from './house-details.store';
 
 @Component({
