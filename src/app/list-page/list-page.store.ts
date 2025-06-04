@@ -281,8 +281,8 @@ export const ListPageStore = signalStore(
           debounceTime(DEBOUNCE_TIME),
           distinctUntilChanged(),
           tap(() =>
-            patchState(store, (state) => {
-              return { isLoading: true };
+            patchState(store, {
+              isLoading: true,
             })
           ),
           switchMap((payload) => {

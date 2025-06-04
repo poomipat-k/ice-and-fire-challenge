@@ -37,6 +37,7 @@ export const FavoritesStore = signalStore(
   // state
   withState(initialState),
   withMethods((store) => ({
+    // expect eg. books/1
     updateFavorites(path: string): void {
       const split = path.split('/');
       if (split.length != 2) {

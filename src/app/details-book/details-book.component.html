@@ -1,4 +1,9 @@
 <div class="container">
+  <div class="fav" (click)="favStore.updateFavorites('books/' + bookId())">
+    <app-com-svg-star
+      [checked]="favStore.isFavored('books', +bookId())"
+    ></app-com-svg-star>
+  </div>
   <h1 class="header">{{ store.book.name() }}</h1>
 
   <div class="row">
