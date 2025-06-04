@@ -1,4 +1,5 @@
-import { effect } from '@angular/core';
+import { effect, inject } from '@angular/core';
+import { tapResponse } from '@ngrx/operators';
 import {
   getState,
   patchState,
@@ -7,15 +8,24 @@ import {
   withMethods,
   withState,
 } from '@ngrx/signals';
+import { combineLatest } from 'rxjs';
+import { BooksService } from '../services/books.service';
+import { CharactersService } from '../services/characters.service';
+import { HousesService } from '../services/houses.service';
+import { Character } from '../shared/models/character';
 
 const LOCAL_STORAGE_FAV = 'favorites';
+
+const FILL_EMPTY_CARD_PER_ROW = 9; // assume biggest to support is 4k Monitor
 
 type FavoritesState = {
   resource: 'books' | 'houses' | 'characters';
   isLoading: boolean;
+  emptySpace: number[];
   books: number[]; // ids
-  houses: number[];
-  characters: number[];
+  houses: number[]; // ids
+  characters: number[]; // ids
+  charactersData: Character[];
 };
 
 type FavoritesLocalStorage = {
@@ -27,111 +37,159 @@ type FavoritesLocalStorage = {
 const initialState: FavoritesState = {
   resource: 'books',
   isLoading: false,
+  emptySpace: [...Array(FILL_EMPTY_CARD_PER_ROW).keys()],
   books: [],
   houses: [],
   characters: [],
+  charactersData: [],
 };
 
 export const FavoritesStore = signalStore(
   { providedIn: 'root' }, // make it global state
   // state
   withState(initialState),
-  withMethods((store) => ({
-    // expect eg. books/1
-    updateFavorites(path: string): void {
-      const split = path.split('/');
-      if (split.length != 2) {
-        console.error('[updateFavorites] invalid input, input:', path);
-        return;
-      }
-      const [resource, id] = split;
-      if (
-        resource !== 'books' &&
-        resource !== 'houses' &&
-        resource !== 'characters'
-      ) {
-        console.error(
-          '[updateFavorites] invalid resource, resource:',
-          resource
+  withMethods(
+    (
+      store,
+      booksService = inject(BooksService),
+      housesService = inject(HousesService),
+      charactersService = inject(CharactersService)
+    ) => ({
+      // expect eg. books/1
+      updateFavorites(path: string): void {
+        const split = path.split('/');
+        if (split.length != 2) {
+          console.error('[updateFavorites] invalid input, input:', path);
+          return;
+        }
+        const [resource, id] = split;
+        if (
+          resource !== 'books' &&
+          resource !== 'houses' &&
+          resource !== 'characters'
+        ) {
+          console.error(
+            '[updateFavorites] invalid resource, resource:',
+            resource
+          );
+          return;
+        }
+        if (this._shouldAdd(resource, +id)) {
+          this._addFavorites(resource, +id);
+        } else {
+          this._removeFavorites(resource, +id);
+        }
+      },
+      isFavored(resource: string, resourceId: number): boolean {
+        if (
+          resource === 'books' ||
+          resource === 'houses' ||
+          resource === 'characters'
+        ) {
+          return !!store[resource]()?.find((s) => s === +resourceId);
+        } else {
+          return false;
+        }
+      },
+
+      getDetailsPath(url: string): string {
+        const split = url.split('anapioficeandfire.com/api');
+        if (split.length < 2) {
+          return '';
+        }
+        return split[split.length - 1];
+      },
+
+      getFavoritesCharacters() {
+        const requests = store
+          .characters()
+          .map((id) => charactersService.getById(id));
+
+        return combineLatest(requests).pipe(
+          tapResponse({
+            next: (res) => {
+              console.log('==res'), res;
+              patchState(store, (state) => {
+                return {
+                  charactersData: res,
+                  isLoading: false,
+                };
+              });
+            },
+            error: (err) => {
+              patchState(store, { isLoading: false });
+              console.error(err);
+            },
+            finalize: () => patchState(store, { isLoading: false }),
+          })
         );
-        return;
-      }
-      if (this._shouldAdd(resource, +id)) {
-        this._addFavorites(resource, +id);
-      } else {
-        this._removeFavorites(resource, +id);
-      }
-    },
+      },
 
-    _addFavorites(
-      resource: 'books' | 'houses' | 'characters',
-      resourceId: number
-    ): void {
-      patchState(store, (state) => {
-        if (resource === 'books') {
-          return {
-            books: [...state.books, resourceId],
-          };
-        } else if (resource === 'houses') {
-          return {
-            houses: [...state.houses, resourceId],
-          };
-        } else if (resource === 'characters') {
-          return {
-            characters: [...state.characters, resourceId],
-          };
+      // Private methods
+
+      _addFavorites(
+        resource: 'books' | 'houses' | 'characters',
+        resourceId: number
+      ): void {
+        patchState(store, (state) => {
+          if (resource === 'books') {
+            return {
+              books: [...state.books, resourceId],
+            };
+          } else if (resource === 'houses') {
+            return {
+              houses: [...state.houses, resourceId],
+            };
+          } else if (resource === 'characters') {
+            return {
+              characters: [...state.characters, resourceId],
+            };
+          }
+          return state;
+        });
+      },
+      _removeFavorites(resource: string, resourceId: number) {
+        patchState(store, (state) => {
+          if (resource === 'books') {
+            return {
+              books: [...state.books].filter((id) => id !== resourceId),
+            };
+          } else if (resource === 'houses') {
+            return {
+              houses: [...state.houses, resourceId].filter(
+                (id) => id !== resourceId
+              ),
+            };
+          } else if (resource === 'characters') {
+            return {
+              characters: [...state.characters, resourceId].filter(
+                (id) => id !== resourceId
+              ),
+              charactersData: [...state.charactersData].filter((character) => {
+                const sp = character.url.split('/characters/');
+                const id = +sp[sp.length - 1];
+                return id !== resourceId;
+              }),
+            };
+          }
+          return state;
+        });
+      },
+
+      _shouldAdd(resource: string, resourceId: number): boolean {
+        if (
+          resource === 'books' ||
+          resource === 'houses' ||
+          resource === 'characters'
+        ) {
+          return !store[resource]()?.find((s) => s === +resourceId);
+        } else {
+          console.error('[_shouldAdd] invalid resource, input:', resource);
+          return false;
         }
-        return state;
-      });
-    },
-    _removeFavorites(resource: string, resourceId: number) {
-      patchState(store, (state) => {
-        if (resource === 'books') {
-          return {
-            books: [...state.books].filter((id) => id !== resourceId),
-          };
-        } else if (resource === 'houses') {
-          return {
-            houses: [...state.houses, resourceId].filter(
-              (id) => id !== resourceId
-            ),
-          };
-        } else if (resource === 'characters') {
-          return {
-            characters: [...state.characters, resourceId].filter(
-              (id) => id !== resourceId
-            ),
-          };
-        }
-        return state;
-      });
-    },
-
-    _shouldAdd(resource: string, resourceId: number): boolean {
-      if (
-        resource === 'books' ||
-        resource === 'houses' ||
-        resource === 'characters'
-      ) {
-        return !store[resource]()?.find((s) => s === +resourceId);
-      } else {
-        console.error('[_shouldAdd] invalid resource, input:', resource);
-        return false;
-      }
-    },
-
-    isFavored(resource: string, resourceId: number): boolean {
-      if (
-        resource === 'books' ||
-        resource === 'houses' ||
-        resource === 'characters'
-      ) {
-        return !!store[resource]()?.find((s) => s === +resourceId);
-      } else {
-        return false;
-      }
-    },
-  })),
+      },
+    })
+  ),
 
   withHooks({
     onInit(store) {
@@ -168,6 +226,7 @@ export const FavoritesStore = signalStore(
           characters: state.characters,
         };
         localStorage.setItem(LOCAL_STORAGE_FAV, JSON.stringify(favLocal));
+        console.log('==updated state', state);
       });
     },
   })
