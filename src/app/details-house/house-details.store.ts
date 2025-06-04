@@ -43,6 +43,9 @@ export const HouseDetailsStore = signalStore(
       housesService = inject(HousesService),
       titleService = inject(Title)
     ) => ({
+      trimBaseUrl(url: string): string {
+        return url.replace('https://anapioficeandfire.com/api/', '');
+      },
       loadById: rxMethod<number>(
         pipe(
           tap(() => patchState(store, { isLoading: true })),
