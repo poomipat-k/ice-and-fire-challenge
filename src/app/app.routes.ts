@@ -2,10 +2,10 @@ import { Routes } from '@angular/router';
 import { DetailsBookComponent } from './details-book/details-book.component';
 import { DetailsCharacterComponent } from './details-character/details-character.component';
 import { DetailsHouseComponent } from './details-house/details-house.component';
-import { FavoritesBooksComponent } from './favorites/favorites-books/favorites-books.component';
-import { FavoritesCharactersComponent } from './favorites/favorites-characters/favorites-characters.component';
-import { FavoritesHousesComponent } from './favorites/favorites-houses/favorites-houses.component';
-import { FavoritesComponent } from './favorites/favorites.component';
+import { FavoritesBooksComponent } from './favorites-books/favorites-books.component';
+import { FavoritesCharactersComponent } from './favorites-characters/favorites-characters.component';
+import { FavoritesHousesComponent } from './favorites-houses/favorites-houses.component';
+
 import { HomeComponent } from './home/home.component';
 import { ListBookPageComponent } from './list-page/list-book-page/list-book-page.component';
 import { ListCharactersPageComponent } from './list-page/list-characters-page/list-characters-page.component';
@@ -45,32 +45,19 @@ export const routes: Routes = [
   },
   // favorites
   {
-    path: 'favorites',
-    title: 'Favorites',
-    redirectTo: '/favorites/books',
-    pathMatch: 'full',
+    path: 'favorites/books',
+    component: FavoritesBooksComponent,
+    title: 'Favorites books',
   },
   {
-    path: 'favorites',
-    component: FavoritesComponent,
-    title: 'Favorites',
-    children: [
-      {
-        path: 'books',
-        component: FavoritesBooksComponent,
-        title: 'Favorites books',
-      },
-      {
-        path: 'houses',
-        component: FavoritesHousesComponent,
-        title: 'Favorites houses',
-      },
-      {
-        path: 'characters',
-        component: FavoritesCharactersComponent,
-        title: 'Favorites characters',
-      },
-    ],
+    path: 'favorites/houses',
+    component: FavoritesHousesComponent,
+    title: 'Favorites houses',
+  },
+  {
+    path: 'favorites/characters',
+    component: FavoritesCharactersComponent,
+    title: 'Favorites characters',
   },
   // details
   {
