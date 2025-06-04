@@ -339,7 +339,3 @@ function getResourceType(url: string): 'books' | 'houses' | 'characters' {
   }
   return 'books';
 }
-
-function getNextPage(url: string): number {
-  return 0;
-}

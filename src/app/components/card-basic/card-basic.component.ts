@@ -1,10 +1,11 @@
 import { Component, input } from '@angular/core';
 import { RouterLink } from '@angular/router';
 import { BasicCardData } from '../../shared/models/basic-card-data';
+import { StarComponent } from '../svg/star/star.component';
 
 @Component({
   selector: 'app-com-card-basic',
-  imports: [RouterLink],
+  imports: [RouterLink, StarComponent],
   templateUrl: './card-basic.component.html',
   styleUrl: './card-basic.component.scss',
 })
@@ -14,4 +15,5 @@ export class CardBasicComponent {
   readonly redirectTo = input<string>(); // eg. "/books/10"
   readonly fontSize = input<string>('18px');
   readonly labelMinWidth = input<string>('0');
+  readonly addNewFav = input<() => void>();
 }
