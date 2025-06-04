@@ -18,11 +18,16 @@ export class CardBookComponent {
 
   bookAttributes = computed<BasicCardData>(() => {
     const released = new Date(this.released());
-    const releasedStr = released.toLocaleDateString('en-UK', {
-      year: 'numeric',
-      month: 'long',
-      day: '2-digit',
-    });
+    let releasedStr = '';
+    if (!released.getDate()) {
+      releasedStr = '-';
+    } else {
+      releasedStr = released.toLocaleDateString('en-UK', {
+        year: 'numeric',
+        month: 'long',
+        day: '2-digit',
+      });
+    }
     return [
       {
         key: 'Authors',

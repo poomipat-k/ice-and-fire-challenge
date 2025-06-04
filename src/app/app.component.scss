@@ -20,7 +20,7 @@
   padding-bottom: 60px;
 }
 
-@media screen and (min-width: 441px) {
+@media screen and (min-width: styles.$non-mobile-bp) {
   .navbar-mobile {
     display: none;
   }

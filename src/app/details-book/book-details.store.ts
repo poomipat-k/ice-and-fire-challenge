@@ -38,6 +38,21 @@ export const BookDetailsStore = signalStore(
       booksService = inject(BooksService),
       titleService = inject(Title)
     ) => ({
+      transformDate(date: string) {
+        const released = new Date(date);
+        let releasedStr = '';
+        if (!released.getDate()) {
+          releasedStr = '-';
+        } else {
+          releasedStr = released.toLocaleDateString('en-UK', {
+            year: 'numeric',
+            month: 'long',
+            day: '2-digit',
+          });
+        }
+        return releasedStr;
+      },
+
       loadById: rxMethod<number>(
         pipe(
           tap(() => patchState(store, { isLoading: true })),
