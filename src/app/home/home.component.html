@@ -1,1 +1,20 @@
-<h1>Landing Page</h1>
+<div class="container">
+  <h1 class="header">A Wiki of Ice and Fire</h1>
+  <div class="cards">
+    <app-com-card-basic
+      header="Books"
+      redirectTo="/list/books"
+      [disableFavorite]="true"
+    ></app-com-card-basic>
+    <app-com-card-basic
+      header="Houses"
+      redirectTo="/list/houses"
+      [disableFavorite]="true"
+    ></app-com-card-basic>
+    <app-com-card-basic
+      header="Characters"
+      redirectTo="/list/characters"
+      [disableFavorite]="true"
+    ></app-com-card-basic>
+  </div>
+</div>

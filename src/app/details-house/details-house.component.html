@@ -1,4 +1,9 @@
 <div class="container">
+  <div class="fav" (click)="favStore.updateFavorites('houses/' + houseId())">
+    <app-com-svg-star
+      [checked]="favStore.isFavored('houses', +houseId())"
+    ></app-com-svg-star>
+  </div>
   <h1 class="header">{{ store.house.name() || "-" }}</h1>
 
   <div class="row">

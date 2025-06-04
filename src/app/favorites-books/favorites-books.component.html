@@ -1,0 +1,35 @@
+<div class="layout">
+  <h1 class="header">Favorites Books</h1>
+  <div class="container">
+    @if (store.isLoading()) { @for (card of store.booksData(); track $index) {
+    <div class="card">
+      <app-com-card-skeleton></app-com-card-skeleton>
+    </div>
+    }
+    <!-- fill empty spaces -->
+    @for (item of store.emptySpace(); track $index) {
+    <div class="empty">
+      <app-com-card-fill-empty></app-com-card-fill-empty>
+    </div>
+    } } @else {
+    <!-- Real data -->
+    @for (book of store.booksData(); track $index) {
+    <div class="card">
+      <app-com-card-book
+        [redirectTo]="store.getDetailsPath(book.url)"
+        [name]="book.name"
+        [authors]="book.authors"
+        [numberOfPages]="book.numberOfPages"
+        [released]="book.released"
+        [isbn]="book.isbn"
+      ></app-com-card-book>
+    </div>
+    }
+    <!-- fill empty spaces -->
+    @for (item of store.emptySpace(); track $index) {
+    <div class="empty">
+      <app-com-card-fill-empty></app-com-card-fill-empty>
+    </div>
+    } }
+  </div>
+</div>

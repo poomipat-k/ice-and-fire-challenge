@@ -60,7 +60,6 @@ export const BookDetailsStore = signalStore(
             return booksService.getById(id).pipe(
               tapResponse({
                 next: (book) => {
-                  console.log('===book: ', book);
                   titleService.setTitle(`Book - ${book.name}`);
                   patchState(store, {
                     book: book,

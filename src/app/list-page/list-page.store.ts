@@ -281,9 +281,8 @@ export const ListPageStore = signalStore(
           debounceTime(DEBOUNCE_TIME),
           distinctUntilChanged(),
           tap(() =>
-            patchState(store, (state) => {
-              console.log('==wait loading state', state);
-              return { isLoading: true };
+            patchState(store, {
+              isLoading: true,
             })
           ),
           switchMap((payload) => {
@@ -338,8 +337,4 @@ function getResourceType(url: string): 'books' | 'houses' | 'characters' {
     return resource;
   }
   return 'books';
-}
-
-function getNextPage(url: string): number {
-  return 0;
 }

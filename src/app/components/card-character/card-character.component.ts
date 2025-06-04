@@ -16,11 +16,11 @@ export class CardCharacterComponent {
   aliases = input.required<string[]>();
 
   header = computed(() => {
-    if (this.aliases().length) {
-      return this.aliases()[0];
-    }
     if (this.name()) {
       return this.name();
+    }
+    if (this.aliases().length) {
+      return this.aliases()[0];
     }
     return '-';
   });
@@ -30,6 +30,10 @@ export class CardCharacterComponent {
       {
         key: 'Name',
         val: this.name() || '-',
+      },
+      {
+        key: 'Aliases',
+        val: this.aliases().join(', ') || '-',
       },
       {
         key: 'Culture',

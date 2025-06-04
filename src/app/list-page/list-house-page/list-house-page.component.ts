@@ -28,6 +28,10 @@ export class ListHousePageComponent implements OnInit {
   }
 
   getDetailsPath(url: string): string {
-    return url.replace('https://anapioficeandfire.com/api', '');
+    const split = url.split('anapioficeandfire.com/api');
+    if (split.length < 2) {
+      return '';
+    }
+    return split[split.length - 1];
   }
 }

@@ -57,7 +57,6 @@ export const CharacterDetailsStore = signalStore(
             return charactersService.getById(id).pipe(
               tapResponse({
                 next: (character) => {
-                  console.log('===character: ', character);
                   titleService.setTitle(
                     `Character - ${character.aliases[0] || character.name}`
                   );

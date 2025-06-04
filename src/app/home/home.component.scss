@@ -1,0 +1,26 @@
+@use "../../styles.scss";
+
+.container {
+  padding: 48px;
+  text-align: center;
+  width: 100%;
+}
+
+.header {
+  font-size: 36px;
+  text-align: center;
+  margin-bottom: 16px;
+}
+
+.cards {
+  display: flex;
+  justify-content: space-around;
+  flex-flow: row wrap;
+  gap: 20px;
+}
+
+@media screen and (min-width: styles.$non-mobile-bp) {
+  .container {
+    padding: 80px;
+  }
+}
