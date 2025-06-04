@@ -43,6 +43,13 @@ export const CharacterDetailsStore = signalStore(
       charactersService = inject(CharactersService),
       titleService = inject(Title)
     ) => ({
+      trimBaseUrl(url: string): string {
+        const split = url.split('anapioficeandfire.com/api/');
+        if (split.length < 2) {
+          return '';
+        }
+        return split[split.length - 1];
+      },
       loadById: rxMethod<number>(
         pipe(
           tap(() => patchState(store, { isLoading: true })),

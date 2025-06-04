@@ -33,7 +33,7 @@
     <div class="list">
       @if (store.house.seats().length) { @for (seat of store.house.seats();
       track $index) {
-      <p class="row__value">{{ `- ${seat}` }}</p>
+      <p class="row__value">{{ `${seat}` }}</p>
       } }@else {
       <p class="row__value">-</p>
       }

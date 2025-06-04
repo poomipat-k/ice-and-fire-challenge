@@ -44,7 +44,11 @@ export const HouseDetailsStore = signalStore(
       titleService = inject(Title)
     ) => ({
       trimBaseUrl(url: string): string {
-        return url.replace('https://anapioficeandfire.com/api/', '');
+        const split = url.split('anapioficeandfire.com/api/');
+        if (split.length < 2) {
+          return '';
+        }
+        return split[split.length - 1];
       },
       loadById: rxMethod<number>(
         pipe(

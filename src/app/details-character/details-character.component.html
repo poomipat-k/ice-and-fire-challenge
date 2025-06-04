@@ -1,62 +1,173 @@
 <div class="container">
+  <h1 class="header">
+    {{ store.character.name() || store.character.aliases()[0] || "-" }}
+  </h1>
   <div class="row">
-    <p class="row__label">name:</p>
-    <p>{{ store.character.name() }}</p>
+    <p class="row__label">Name:</p>
+    <p class="row__value">{{ store.character.name() }}</p>
   </div>
   <div class="row">
-    <p class="row__label">gender:</p>
-    <p>{{ store.character.gender() }}</p>
+    <p class="row__label">Aliases:</p>
+    <div class="list">
+      @if (store.character.aliases().length) { @for (ali of
+      store.character.aliases(); track $index) {
+      <p class="row__value">{{ `"${ali}"` }}</p>
+      } }@else {
+      <p class="row__value">-</p>
+      }
+    </div>
   </div>
   <div class="row">
-    <p class="row__label">culture:</p>
-    <p>{{ store.character.culture() }}</p>
+    <p class="row__label">Gender:</p>
+    <p class="row__value">{{ store.character.gender() || "-" }}</p>
   </div>
   <div class="row">
-    <p class="row__label">born:</p>
-    <p>{{ store.character.born() }}</p>
+    <p class="row__label">Culture:</p>
+    <p class="row__value">{{ store.character.culture() || "-" }}</p>
   </div>
   <div class="row">
-    <p class="row__label">died:</p>
-    <p>{{ store.character.died() }}</p>
+    <p class="row__label">Born:</p>
+    <p class="row__value">{{ store.character.born() || "-" }}</p>
   </div>
   <div class="row">
-    <p class="row__label">titles:</p>
-    <p>{{ store.character.titles() }}</p>
+    <p class="row__label">Died:</p>
+    <p class="row__value">{{ store.character.died() || "-" }}</p>
   </div>
   <div class="row">
-    <p class="row__label">aliases:</p>
-    <p>{{ store.character.aliases() }}</p>
+    <p class="row__label">Titles:</p>
+    <div class="list">
+      @if (store.character.titles().length) { @for (title of
+      store.character.titles(); track $index) {
+      <p class="row__value">{{ `"${title}"` }}</p>
+      } }@else {
+      <p class="row__value">-</p>
+      }
+    </div>
   </div>
   <div class="row">
-    <p class="row__label">father:</p>
-    <p>{{ store.character.father() }}</p>
+    <p class="row__label">Father:</p>
+    @if (store.character.father()) {
+    <div class="link__container">
+      <a
+        class="link__item"
+        [routerLink]="`/${store.trimBaseUrl(store.character.father())}`"
+        target="_blank"
+        >{{ `${store.trimBaseUrl(store.character.father())} ` }}</a
+      >
+      <div class="link__icon">
+        <app-com-svg-external-link></app-com-svg-external-link>
+      </div>
+    </div>
+    } @else {
+    <p class="row__value">-</p>
+    }
   </div>
   <div class="row">
-    <p class="row__label">mother:</p>
-    <p>{{ store.character.mother() }}</p>
+    <p class="row__label">Mother:</p>
+    @if (store.character.mother()) {
+    <div class="link__container">
+      <a
+        class="link__item"
+        [routerLink]="`/${store.trimBaseUrl(store.character.mother())}`"
+        target="_blank"
+        >{{ `${store.trimBaseUrl(store.character.mother())} ` }}</a
+      >
+      <div class="link__icon">
+        <app-com-svg-external-link></app-com-svg-external-link>
+      </div>
+    </div>
+    } @else {
+    <p class="row__value">-</p>
+    }
   </div>
   <div class="row">
-    <p class="row__label">spouse:</p>
-    <p>{{ store.character.spouse() }}</p>
+    <p class="row__label">Spouse:</p>
+    @if (store.character.spouse()) {
+    <div class="link__container">
+      <a
+        class="link__item"
+        [routerLink]="`/${store.trimBaseUrl(store.character.spouse())}`"
+        target="_blank"
+        >{{ `${store.trimBaseUrl(store.character.spouse())} ` }}</a
+      >
+      <div class="link__icon">
+        <app-com-svg-external-link></app-com-svg-external-link>
+      </div>
+    </div>
+    } @else {
+    <p class="row__value">-</p>
+    }
   </div>
   <div class="row">
-    <p class="row__label">allegiances:</p>
-    <p>{{ store.character.allegiances() }}</p>
+    <p class="row__label">Allegiances:</p>
+    <div class="list">
+      @if (store.character.allegiances().length) { @for (ally of
+      store.character.allegiances(); track $index) {
+      <div class="link__container">
+        <a
+          class="link__item"
+          [routerLink]="`/${store.trimBaseUrl(ally)}`"
+          target="_blank"
+          >{{ `${store.trimBaseUrl(ally)} ` }}</a
+        >
+        <div class="link__icon">
+          <app-com-svg-external-link></app-com-svg-external-link>
+        </div>
+      </div>
+      } }@else {
+      <p class="row__value">-</p>
+      }
+    </div>
   </div>
   <div class="row">
-    <p class="row__label">books:</p>
-    <p>{{ store.character.books() }}</p>
+    <p class="row__label">Books:</p>
+    <div class="list">
+      @if (store.character.books().length) { @for (book of
+      store.character.books(); track $index) {
+      <div class="link__container">
+        <a
+          class="link__item"
+          [routerLink]="`/${store.trimBaseUrl(book)}`"
+          target="_blank"
+          >{{ `${store.trimBaseUrl(book)} ` }}</a
+        >
+
+        <div class="link__icon">
+          <app-com-svg-external-link></app-com-svg-external-link>
+        </div>
+      </div>
+      } }@else {
+      <p class="row__value">-</p>
+      }
+    </div>
   </div>
   <div class="row">
-    <p class="row__label">povBooks:</p>
-    <p>{{ store.character.povBooks() }}</p>
+    <p class="row__label">POV Books:</p>
+    <div class="list">
+      @if (store.character.povBooks().length) { @for (book of
+      store.character.povBooks(); track $index) {
+      <div class="link__container">
+        <a
+          class="link__item"
+          [routerLink]="`/${store.trimBaseUrl(book)}`"
+          target="_blank"
+          >{{ `${store.trimBaseUrl(book)} ` }}</a
+        >
+        <div class="link__icon">
+          <app-com-svg-external-link></app-com-svg-external-link>
+        </div>
+      </div>
+      } }@else {
+      <p class="row__value">-</p>
+      }
+    </div>
   </div>
   <div class="row">
-    <p class="row__label">tvSeries:</p>
-    <p>{{ store.character.tvSeries() }}</p>
+    <p class="row__label">TV Series:</p>
+    <p class="row__value">{{ store.character.tvSeries().join(", ") }}</p>
   </div>
   <div class="row">
-    <p class="row__label">playedBy:</p>
-    <p>{{ store.character.playedBy() }}</p>
+    <p class="row__label">Played by:</p>
+    <p class="row__value">{{ store.character.playedBy() }}</p>
   </div>
 </div>
