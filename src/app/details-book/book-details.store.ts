@@ -1,8 +1,9 @@
 import { inject } from '@angular/core';
+import { Title } from '@angular/platform-browser';
 import { tapResponse } from '@ngrx/operators';
 import { patchState, signalStore, withMethods, withState } from '@ngrx/signals';
 import { rxMethod } from '@ngrx/signals/rxjs-interop';
-import { debounceTime, distinctUntilChanged, pipe, switchMap, tap } from 'rxjs';
+import { pipe, switchMap, tap } from 'rxjs';
 import { BooksService } from '../services/books.service';
 import { Book } from '../shared/models/book';
 
@@ -31,31 +32,36 @@ const initialState: BookDetailsState = {
 export const BookDetailsStore = signalStore(
   // state
   withState(initialState),
-  withMethods((store, booksService = inject(BooksService)) => ({
-    loadById: rxMethod<number>(
-      pipe(
-        debounceTime(300),
-        distinctUntilChanged(),
-        tap(() => patchState(store, { isLoading: true })),
-        switchMap((id) => {
-          return booksService.getById(id).pipe(
-            tapResponse({
-              next: (book) => {
-                console.log('===book: ', book);
-                patchState(store, {
-                  book: book,
-                  isLoading: false,
-                });
-              },
-              error: (err) => {
-                patchState(store, { isLoading: false });
-                console.error(err);
-              },
-              finalize: () => patchState(store, { isLoading: false }),
-            })
-          );
-        })
-      )
-    ),
-  }))
+  withMethods(
+    (
+      store,
+      booksService = inject(BooksService),
+      titleService = inject(Title)
+    ) => ({
+      loadById: rxMethod<number>(
+        pipe(
+          tap(() => patchState(store, { isLoading: true })),
+          switchMap((id) => {
+            return booksService.getById(id).pipe(
+              tapResponse({
+                next: (book) => {
+                  console.log('===book: ', book);
+                  titleService.setTitle(`Book - ${book.name}`);
+                  patchState(store, {
+                    book: book,
+                    isLoading: false,
+                  });
+                },
+                error: (err) => {
+                  patchState(store, { isLoading: false });
+                  console.error(err);
+                },
+                finalize: () => patchState(store, { isLoading: false }),
+              })
+            );
+          })
+        )
+      ),
+    })
+  )
 );
