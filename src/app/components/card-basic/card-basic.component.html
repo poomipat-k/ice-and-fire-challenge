@@ -1,24 +1,26 @@
-<div class="card" [routerLink]="redirectTo()">
-  <div>
-    <h3 class="card__header">{{ header() }}</h3>
-    <div class="card__data">
-      @for (field of card(); track $index) {
-      <div class="card__row">
-        <p
-          class="card__label"
-          [style]="{ fontSize: fontSize(), minWidth: labelMinWidth() }"
-        >
-          {{ field.key }}
-        </p>
-        <p class="card__value" [style]="{ fontSize: fontSize() }">
-          {{ field.val }}
-        </p>
+<a [routerLink]="redirectTo()" class="link">
+  <div class="card">
+    <div>
+      <h3 class="card__header">{{ header() }}</h3>
+      <div class="card__data">
+        @for (field of card(); track $index) {
+        <div class="card__row">
+          <p
+            class="card__label"
+            [style]="{ fontSize: fontSize(), minWidth: labelMinWidth() }"
+          >
+            {{ field.key }}
+          </p>
+          <p class="card__value" [style]="{ fontSize: fontSize() }">
+            {{ field.val }}
+          </p>
+        </div>
+        }
       </div>
-      }
+    </div>
+
+    <div class="fav" (click)="onFavClick($event)">
+      <app-com-svg-star></app-com-svg-star>
     </div>
   </div>
-
-  <div class="fav" (click)="addNewFav()">
-    <app-com-svg-star></app-com-svg-star>
-  </div>
-</div>
+</a>

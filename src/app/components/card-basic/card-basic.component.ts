@@ -15,5 +15,11 @@ export class CardBasicComponent {
   readonly redirectTo = input<string>(); // eg. "/books/10"
   readonly fontSize = input<string>('18px');
   readonly labelMinWidth = input<string>('0');
-  readonly addNewFav = input<() => void>();
+  // readonly onFavClick = input<(e: MouseEvent) => void>();
+
+  onFavClick(e: MouseEvent): void {
+    console.log('==onFavClick e:', e);
+    e.stopPropagation();
+    e.preventDefault();
+  }
 }

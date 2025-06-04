@@ -1,3 +1,8 @@
+.link {
+  text-decoration: none;
+  color: #000;
+}
+
 .card {
   width: 328px;
   padding: 20px;
@@ -5,8 +10,12 @@
   border-radius: 16px;
   position: relative;
   cursor: pointer;
-
   box-shadow: 0px 0px 12px 0px #00000026;
+
+  &:hover {
+    // background-color: #fcfef0;
+    box-shadow: 0px 0px 12px 0px #000000ff;
+  }
 
   &__data {
     display: flex;
@@ -40,10 +49,10 @@
 .fav {
   cursor: pointer;
   position: absolute;
-  top: -10px;
-  right: -10px;
+  top: 0;
+  right: 0;
   width: 36px;
   height: 36px;
   z-index: 3;
-  // border: 1px solid red;
+  border: 1px solid red;
 }
