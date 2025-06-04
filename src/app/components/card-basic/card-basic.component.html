@@ -20,7 +20,11 @@
     </div>
 
     <div class="fav" (click)="onFavClick($event)">
-      <app-com-svg-star></app-com-svg-star>
+      <app-com-svg-star
+        [checked]="
+          favoritesStore.isFavored(metaData().resource, metaData().resourceId)
+        "
+      ></app-com-svg-star>
     </div>
   </div>
 </a>

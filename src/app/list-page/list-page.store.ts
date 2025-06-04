@@ -282,7 +282,6 @@ export const ListPageStore = signalStore(
           distinctUntilChanged(),
           tap(() =>
             patchState(store, (state) => {
-              console.log('==wait loading state', state);
               return { isLoading: true };
             })
           ),

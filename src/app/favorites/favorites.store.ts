@@ -1,10 +1,14 @@
+import { effect } from '@angular/core';
 import {
+  getState,
   patchState,
   signalStore,
   withHooks,
   withMethods,
   withState,
 } from '@ngrx/signals';
+
+const LOCAL_STORAGE_FAV = 'favorites';
 
 type FavoritesState = {
   resource: 'books' | 'houses' | 'characters';
@@ -33,31 +37,96 @@ export const FavoritesStore = signalStore(
   // state
   withState(initialState),
   withMethods((store) => ({
-    updateFavorites(path: string): void {},
-
-    _addFavorites(path: string): void {
-      if (store.resource() === 'books') {
-        patchState(store, (state) => ({}));
-      } else if (store.resource() === 'houses') {
-      } else if (store.resource() === 'characters') {
+    updateFavorites(path: string): void {
+      const split = path.split('/');
+      if (split.length != 2) {
+        console.error('[updateFavorites] invalid input, input:', path);
+        return;
+      }
+      const [resource, id] = split;
+      if (
+        resource !== 'books' &&
+        resource !== 'houses' &&
+        resource !== 'characters'
+      ) {
+        console.error(
+          '[updateFavorites] invalid resource, resource:',
+          resource
+        );
+        return;
+      }
+      if (this._shouldAdd(resource, +id)) {
+        this._addFavorites(resource, +id);
+      } else {
+        this._removeFavorites(resource, +id);
       }
     },
-    _removeFavorites() {},
 
-    _shouldAdd(path: string): boolean {
-      const [resource, id] = path.split('/');
-      if (!resource || !id) {
-        console.error('[_shouldAdd] path invalid, input:', path);
-        return false;
-      }
+    _addFavorites(
+      resource: 'books' | 'houses' | 'characters',
+      resourceId: number
+    ): void {
+      patchState(store, (state) => {
+        if (resource === 'books') {
+          return {
+            books: [...state.books, resourceId],
+          };
+        } else if (resource === 'houses') {
+          return {
+            houses: [...state.houses, resourceId],
+          };
+        } else if (resource === 'characters') {
+          return {
+            characters: [...state.characters, resourceId],
+          };
+        }
+        return state;
+      });
+    },
+    _removeFavorites(resource: string, resourceId: number) {
+      patchState(store, (state) => {
+        if (resource === 'books') {
+          return {
+            books: [...state.books].filter((id) => id !== resourceId),
+          };
+        } else if (resource === 'houses') {
+          return {
+            houses: [...state.houses, resourceId].filter(
+              (id) => id !== resourceId
+            ),
+          };
+        } else if (resource === 'characters') {
+          return {
+            characters: [...state.characters, resourceId].filter(
+              (id) => id !== resourceId
+            ),
+          };
+        }
+        return state;
+      });
+    },
+
+    _shouldAdd(resource: string, resourceId: number): boolean {
       if (
         resource === 'books' ||
         resource === 'houses' ||
         resource === 'characters'
       ) {
-        return !store[resource]()?.find((s) => s === +id);
+        return !store[resource]()?.find((s) => s === +resourceId);
       } else {
-        console.error('[_shouldAdd] resource invalid, input:', path);
+        console.error('[_shouldAdd] invalid resource, input:', resource);
+        return false;
+      }
+    },
+
+    isFavored(resource: string, resourceId: number): boolean {
+      if (
+        resource === 'books' ||
+        resource === 'houses' ||
+        resource === 'characters'
+      ) {
+        return !!store[resource]()?.find((s) => s === +resourceId);
+      } else {
         return false;
       }
     },
@@ -65,7 +134,7 @@ export const FavoritesStore = signalStore(
 
   withHooks({
     onInit(store) {
-      const favoritesLc = localStorage.getItem('favorites');
+      const favoritesLc = localStorage.getItem(LOCAL_STORAGE_FAV);
       if (favoritesLc) {
         const favorites: FavoritesLocalStorage = JSON.parse(favoritesLc);
 
@@ -81,7 +150,7 @@ export const FavoritesStore = signalStore(
           houses: [],
           characters: [],
         };
-        localStorage.setItem('favorites', JSON.stringify(newFavorites));
+        localStorage.setItem(LOCAL_STORAGE_FAV, JSON.stringify(newFavorites));
 
         patchState(store, {
           books: [],
@@ -90,7 +159,15 @@ export const FavoritesStore = signalStore(
         });
       }
 
-      console.log('==INIT finished');
+      effect(() => {
+        const state = getState(store);
+        const favLocal: FavoritesLocalStorage = {
+          books: state.books,
+          houses: state.houses,
+          characters: state.characters,
+        };
+        localStorage.setItem(LOCAL_STORAGE_FAV, JSON.stringify(favLocal));
+      });
     },
   })
 );

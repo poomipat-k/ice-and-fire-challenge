@@ -1,4 +1,4 @@
-import { Component, inject, input } from '@angular/core';
+import { Component, computed, inject, input } from '@angular/core';
 import { RouterLink } from '@angular/router';
 import { FavoritesStore } from '../../favorites/favorites.store';
 import { BasicCardData } from '../../shared/models/basic-card-data';
@@ -18,6 +18,26 @@ export class CardBasicComponent {
   readonly redirectTo = input<string>(); // eg. "/books/10"
   readonly fontSize = input<string>('18px');
   readonly labelMinWidth = input<string>('0');
+
+  readonly metaData = computed(() => {
+    if (!this.redirectTo()) {
+      return {
+        resource: '',
+        resourceId: 0,
+      };
+    }
+    const split = this.redirectTo()?.split('/') || [];
+    if (split.length !== 3) {
+      return {
+        resource: '',
+        resourceId: 0,
+      };
+    }
+    return {
+      resource: split[1],
+      resourceId: +split[2],
+    };
+  });
 
   onFavClick(e: MouseEvent): void {
     e.stopPropagation();

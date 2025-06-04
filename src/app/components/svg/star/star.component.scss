@@ -4,7 +4,16 @@
 
   &:hover {
     stroke: #feb273;
-    // fill: #feb273;
-    // fill: red;
+    fill: #fff;
+  }
+
+  &--checked {
+    stroke: #feb273;
+    fill: #feb273;
+
+    &:hover {
+      stroke: #feb273;
+      fill: #feb273;
+    }
   }
 }
