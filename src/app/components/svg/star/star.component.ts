@@ -1,4 +1,4 @@
-import { Component } from '@angular/core';
+import { Component, input } from '@angular/core';
 
 @Component({
   selector: 'app-com-svg-star',
@@ -6,4 +6,6 @@ import { Component } from '@angular/core';
   templateUrl: './star.component.html',
   styleUrl: './star.component.scss',
 })
-export class StarComponent {}
+export class StarComponent {
+  readonly checked = input<boolean>(false);
+}

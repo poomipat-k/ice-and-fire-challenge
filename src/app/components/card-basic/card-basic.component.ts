@@ -1,5 +1,6 @@
-import { Component, input } from '@angular/core';
+import { Component, inject, input } from '@angular/core';
 import { RouterLink } from '@angular/router';
+import { FavoritesStore } from '../../favorites/favorites.store';
 import { BasicCardData } from '../../shared/models/basic-card-data';
 import { StarComponent } from '../svg/star/star.component';
 
@@ -10,16 +11,30 @@ import { StarComponent } from '../svg/star/star.component';
   styleUrl: './card-basic.component.scss',
 })
 export class CardBasicComponent {
+  readonly favoritesStore = inject(FavoritesStore);
+
   readonly card = input<BasicCardData>();
   readonly header = input<string>();
   readonly redirectTo = input<string>(); // eg. "/books/10"
   readonly fontSize = input<string>('18px');
   readonly labelMinWidth = input<string>('0');
-  // readonly onFavClick = input<(e: MouseEvent) => void>();
 
   onFavClick(e: MouseEvent): void {
-    console.log('==onFavClick e:', e);
     e.stopPropagation();
     e.preventDefault();
+
+    if (!this.redirectTo()) {
+      console.error('redirectTo is empty');
+      return;
+    }
+    const path = this.redirectTo()?.replace('/', '');
+    if (!path) {
+      console.error(
+        'onFavClick: path is not valid, input: ',
+        this.redirectTo()
+      );
+      return;
+    }
+    this.favoritesStore.updateFavorites(path);
   }
 }
