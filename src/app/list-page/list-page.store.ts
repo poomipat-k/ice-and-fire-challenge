@@ -1,4 +1,3 @@
-import { HttpResponse } from '@angular/common/http';
 import { computed, inject } from '@angular/core';
 import { FormControl } from '@angular/forms';
 import { Event, NavigationEnd, Router, RouterEvent } from '@angular/router';
@@ -280,14 +279,16 @@ export const ListPageStore = signalStore(
 
                     patchState(store, (state) => {
                       let newHouses = [...state.houses];
-                      if (name.body) {
-                        newHouses = newHouses.concat(name.body);
-                      }
-                      console.log('==newHouse', newHouses.length);
                       if (region.body) {
                         newHouses = newHouses.concat(region.body);
                       }
-                      console.log('==newHouse', newHouses.length);
+                      if (name.body) {
+                        name.body.forEach((house) => {
+                          if (newHouses.every((h) => h.url !== house.url)) {
+                            newHouses.push(house);
+                          }
+                        });
+                      }
 
                       return {
                         houses: newHouses,
@@ -352,11 +353,74 @@ export const ListPageStore = signalStore(
             })
           ),
           switchMap((payload) => {
+            if (payload.query) {
+              return forkJoin({
+                name: charactersService.getByQuery(
+                  payload.query,
+                  'name',
+                  payload.page,
+                  payload.pageSize
+                ),
+                culture: charactersService.getByQuery(
+                  payload.query,
+                  'culture',
+                  payload.page,
+                  payload.pageSize
+                ),
+              }).pipe(
+                tapResponse({
+                  next: ({ name, culture }) => {
+                    const nameLinkHeader = name?.headers?.get('Link');
+                    const cultureLinkHeader = culture?.headers?.get('Link');
+                    let hasNextPage = false;
+                    if (nameLinkHeader) {
+                      const parsedLinks = parse(nameLinkHeader);
+                      hasNextPage =
+                        hasNextPage ||
+                        !!parsedLinks.refs.find((link) => link.rel === 'next');
+                    }
+                    if (cultureLinkHeader) {
+                      const parsedLinks = parse(cultureLinkHeader);
+                      hasNextPage =
+                        hasNextPage ||
+                        !!parsedLinks.refs.find((link) => link.rel === 'next');
+                    }
+
+                    patchState(store, (state) => {
+                      let newCharacters = [...state.characters];
+                      if (culture.body) {
+                        newCharacters = newCharacters.concat(culture.body);
+                      }
+                      if (name.body) {
+                        name.body.forEach((character) => {
+                          if (
+                            newCharacters.every((c) => c.url !== character.url)
+                          ) {
+                            newCharacters.push(character);
+                          }
+                        });
+                      }
+
+                      return {
+                        characters: newCharacters,
+                        isLoading: false,
+                        hasNextPage: hasNextPage,
+                      };
+                    });
+                  },
+                  error: (err) => {
+                    patchState(store, { isLoading: false });
+                    console.error(err);
+                  },
+                  finalize: () => patchState(store, { isLoading: false }),
+                })
+              );
+            }
             return charactersService
               .getByQuery(payload.query, 'name', payload.page, payload.pageSize)
               .pipe(
                 tapResponse({
-                  next: (res: HttpResponse<Character[]>) => {
+                  next: (res) => {
                     const linkHeader = res?.headers?.get('Link');
 
                     let hasNextPage = false;
@@ -366,6 +430,7 @@ export const ListPageStore = signalStore(
                         (link) => link.rel === 'next'
                       );
                     }
+
                     patchState(store, (state) => {
                       let newCharacters = [...state.characters];
                       if (res.body) {
