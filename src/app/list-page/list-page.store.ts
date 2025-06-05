@@ -17,6 +17,7 @@ import {
   debounceTime,
   distinctUntilChanged,
   filter,
+  forkJoin,
   pipe,
   switchMap,
   tap,
@@ -128,6 +129,12 @@ export const ListPageStore = signalStore(
         store.charactersFilter().pageSize + store.characters().length;
       return [...Array(total)];
     }),
+    searchPlaceHolder: computed(() => {
+      if (store.resource() === 'houses') {
+        return 'Search names or regions';
+      }
+      return 'Search for names';
+    }),
   })),
   // methods
   withMethods(
@@ -195,7 +202,7 @@ export const ListPageStore = signalStore(
           tap(() => patchState(store, { isLoading: true })),
           switchMap((payload) => {
             return booksService
-              .getByQuery(payload.query, payload.page, payload.pageSize)
+              .getByQuery(payload.query, 'name', payload.page, payload.pageSize)
               .pipe(
                 tapResponse({
                   next: (res) => {
@@ -238,8 +245,67 @@ export const ListPageStore = signalStore(
           distinctUntilChanged(),
           tap(() => patchState(store, { isLoading: true })),
           switchMap((payload) => {
+            if (payload.query) {
+              return forkJoin({
+                name: housesService.getByQuery(
+                  payload.query,
+                  'name',
+                  payload.page,
+                  payload.pageSize
+                ),
+                region: housesService.getByQuery(
+                  payload.query,
+                  'region',
+                  payload.page,
+                  payload.pageSize
+                ),
+              }).pipe(
+                tapResponse({
+                  next: ({ name, region }) => {
+                    const nameLinkHeader = name?.headers?.get('Link');
+                    const regionLinkHeader = region?.headers?.get('Link');
+                    let hasNextPage = false;
+                    if (nameLinkHeader) {
+                      const parsedLinks = parse(nameLinkHeader);
+                      hasNextPage =
+                        hasNextPage ||
+                        !!parsedLinks.refs.find((link) => link.rel === 'next');
+                    }
+                    if (regionLinkHeader) {
+                      const parsedLinks = parse(regionLinkHeader);
+                      hasNextPage =
+                        hasNextPage ||
+                        !!parsedLinks.refs.find((link) => link.rel === 'next');
+                    }
+
+                    patchState(store, (state) => {
+                      let newHouses = [...state.houses];
+                      if (name.body) {
+                        newHouses = newHouses.concat(name.body);
+                      }
+                      console.log('==newHouse', newHouses.length);
+                      if (region.body) {
+                        newHouses = newHouses.concat(region.body);
+                      }
+                      console.log('==newHouse', newHouses.length);
+
+                      return {
+                        houses: newHouses,
+                        isLoading: false,
+                        hasNextPage: hasNextPage,
+                      };
+                    });
+                  },
+                  error: (err) => {
+                    patchState(store, { isLoading: false });
+                    console.error(err);
+                  },
+                  finalize: () => patchState(store, { isLoading: false }),
+                })
+              );
+            }
             return housesService
-              .getByQuery(payload.query, payload.page, payload.pageSize)
+              .getByQuery(payload.query, 'name', payload.page, payload.pageSize)
               .pipe(
                 tapResponse({
                   next: (res) => {
@@ -287,7 +353,7 @@ export const ListPageStore = signalStore(
           ),
           switchMap((payload) => {
             return charactersService
-              .getByQuery(payload.query, payload.page, payload.pageSize)
+              .getByQuery(payload.query, 'name', payload.page, payload.pageSize)
               .pipe(
                 tapResponse({
                   next: (res: HttpResponse<Character[]>) => {

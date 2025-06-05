@@ -7,6 +7,7 @@ import { House } from '../models/house';
 export interface QueryResource {
   getByQuery(
     query: string,
+    queryOn: string,
     page: number,
     pageSize: number
   ): Observable<HttpResponse<Book[] | House[] | Character[]>>;

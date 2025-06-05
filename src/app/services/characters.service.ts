@@ -15,10 +15,10 @@ export class CharactersService implements QueryResource {
 
   constructor() {}
 
-  getByQuery(query: string, page: number, pageSize: number) {
+  getByQuery(query: string, queryOn: string, page: number, pageSize: number) {
     return this.http
       .get<Character[]>(
-        `${this.baseApiUrl}/characters?name=${query}&page=${page}&pageSize=${pageSize}`,
+        `${this.baseApiUrl}/characters?${queryOn}=${query}&page=${page}&pageSize=${pageSize}`,
         { observe: 'response' }
       )
       .pipe(catchError(handleError));

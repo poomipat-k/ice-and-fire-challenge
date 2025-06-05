@@ -9,7 +9,7 @@ import { FormControl, ReactiveFormsModule } from '@angular/forms';
 })
 export class InputTextComponent {
   control = input.required<FormControl>();
-  placeholder = input<string>('Search for name');
+  placeholder = input<string>('');
   isPassword = input(false);
   width = input('100%');
   height = input('42px');
