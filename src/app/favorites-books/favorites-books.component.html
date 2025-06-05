@@ -1,7 +1,10 @@
 <div class="layout">
   <h1 class="header">Favorites Books</h1>
+  @if (!store.books().length) {
+  <p class="emptyText">No favorite books</p>
+  } @else {
   <div class="container">
-    @if (store.isLoading()) { @for (card of store.booksData(); track $index) {
+    @if (store.isLoading()) { @for (card of store.books(); track $index) {
     <div class="card">
       <app-com-card-skeleton></app-com-card-skeleton>
     </div>
@@ -32,4 +35,5 @@
     </div>
     } }
   </div>
+  }
 </div>

@@ -8,7 +8,7 @@ import {
   withMethods,
   withState,
 } from '@ngrx/signals';
-import { combineLatest } from 'rxjs';
+import { combineLatest, tap } from 'rxjs';
 import { BooksService } from '../services/books.service';
 import { CharactersService } from '../services/characters.service';
 import { HousesService } from '../services/houses.service';
@@ -109,6 +109,7 @@ export const FavoritesStore = signalStore(
       getFavoritesBooks() {
         const requests = store.books().map((id) => booksService.getById(id));
         return combineLatest(requests).pipe(
+          tap(() => patchState(store, { isLoading: true })),
           tapResponse({
             next: (data) => {
               patchState(store, { booksData: data, isLoading: false });
@@ -126,6 +127,7 @@ export const FavoritesStore = signalStore(
         const requests = store.houses().map((id) => housesService.getById(id));
 
         return combineLatest(requests).pipe(
+          tap(() => patchState(store, { isLoading: true })),
           tapResponse({
             next: (data) => {
               patchState(store, { housesData: data, isLoading: false });
@@ -144,6 +146,7 @@ export const FavoritesStore = signalStore(
           .characters()
           .map((id) => charactersService.getById(id));
         return combineLatest(requests).pipe(
+          tap(() => patchState(store, { isLoading: true })),
           tapResponse({
             next: (data) => {
               patchState(store, { charactersData: data, isLoading: false });
