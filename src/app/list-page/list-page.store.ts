@@ -131,6 +131,8 @@ export const ListPageStore = signalStore(
     searchPlaceHolder: computed(() => {
       if (store.resource() === 'houses') {
         return 'Search names or regions';
+      } else if (store.resource() === 'characters') {
+        return 'Search names or cultures';
       }
       return 'Search for names';
     }),
