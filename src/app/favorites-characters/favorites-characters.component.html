@@ -1,8 +1,10 @@
 <div class="layout">
   <h1 class="header">Favorites Characters</h1>
+  @if (!store.characters().length) {
+  <p class="emptyText">No favorite characters</p>
+  } @else {
   <div class="container">
-    @if (store.isLoading()) { @for (card of store.charactersData(); track
-    $index) {
+    @if (store.isLoading()) { @for (card of store.characters(); track $index) {
     <div class="card">
       <app-com-card-skeleton></app-com-card-skeleton>
     </div>
@@ -32,4 +34,5 @@
     </div>
     } }
   </div>
+  }
 </div>
