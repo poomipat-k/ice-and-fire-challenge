@@ -284,7 +284,7 @@ export const ListPageStore = signalStore(
                       }
                       if (name.body) {
                         name.body.forEach((house) => {
-                          if (newHouses.every((h) => h.url !== house.url)) {
+                          if (!newHouses.some((h) => h.url === house.url)) {
                             newHouses.push(house);
                           }
                         });
@@ -394,7 +394,7 @@ export const ListPageStore = signalStore(
                       if (name.body) {
                         name.body.forEach((character) => {
                           if (
-                            newCharacters.every((c) => c.url !== character.url)
+                            !newCharacters.some((c) => c.url !== character.url)
                           ) {
                             newCharacters.push(character);
                           }
