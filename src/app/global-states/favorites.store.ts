@@ -107,6 +107,7 @@ export const FavoritesStore = signalStore(
       },
 
       getFavoritesBooks() {
+        patchState(store, { isLoading: true });
         const requests = store.books().map((id) => booksService.getById(id));
         return combineLatest(requests).pipe(
           tap(() => patchState(store, { isLoading: true })),
@@ -124,6 +125,7 @@ export const FavoritesStore = signalStore(
       },
 
       getFavoritesHouses() {
+        patchState(store, { isLoading: true });
         const requests = store.houses().map((id) => housesService.getById(id));
 
         return combineLatest(requests).pipe(
@@ -142,6 +144,7 @@ export const FavoritesStore = signalStore(
       },
 
       getFavoritesCharacters() {
+        patchState(store, { isLoading: true });
         const requests = store
           .characters()
           .map((id) => charactersService.getById(id));
