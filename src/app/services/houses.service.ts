@@ -17,12 +17,13 @@ export class HousesService implements QueryResource {
 
   getByQuery(
     query: string,
+    queryOn: string,
     page: number,
     pageSize: number
   ): Observable<HttpResponse<House[]>> {
     return this.http
       .get<House[]>(
-        `${this.baseApiUrl}/houses?name=${query}&page=${page}&pageSize=${pageSize}`,
+        `${this.baseApiUrl}/houses?${queryOn}=${query}&page=${page}&pageSize=${pageSize}`,
         { observe: 'response' }
       )
       .pipe(catchError(handleError));

@@ -16,12 +16,13 @@ export class BooksService implements QueryResource {
 
   getByQuery(
     query: string,
+    queryOn: string,
     page: number,
     pageSize: number
   ): Observable<HttpResponse<Book[]>> {
     return this.http
       .get<Book[]>(
-        `${this.baseApiUrl}/books?name=${query}&page=${page}&pageSize=${pageSize}`,
+        `${this.baseApiUrl}/books?${queryOn}=${query}&page=${page}&pageSize=${pageSize}`,
         { observe: 'response' }
       )
       .pipe(catchError(handleError));
